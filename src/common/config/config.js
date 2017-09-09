@@ -3,7 +3,7 @@ module.exports = {
     port: 3001,
     version: 'v1',
     status: 'test', // test || live
-    host: 'http://localhost:3000/api/v1',
+    host: 'http://localhost:3001/api/v1',
     // host: 'https://desolate-coast-39570.herokuapp.com/api/v1',
   },
   database: {
