@@ -42,7 +42,7 @@ class RepairController {
    */
   addRepair(req, res, next) {
     const defaultValues = {
-      userId: req.user.id,
+      userId: req.userId.id,
       createdBy: req.user.id,
       completed: false,
       approved: false,
