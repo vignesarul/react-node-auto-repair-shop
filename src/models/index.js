@@ -7,8 +7,8 @@ const Access = require('models/access');
 const accessSchema = require('schema/access');
 const Role = require('models/role');
 const roleSchema = require('schema/role');
-/*const Meal = require('models/meal');
-const mealSchema = require('schema/meal');*/
+const Repair = require('models/repair');
+const repairSchema = require('schema/repair');
 
 module.exports = db => ({
   user: new User({
@@ -31,10 +31,10 @@ module.exports = db => ({
     tableName: roleSchema.tableName,
     jsonSchema: roleSchema,
   }),
-  /*meal: new Meal({
+  repair: new Repair({
     db,
-    schema: mongooseSchema(mealSchema.postSchema),
-    tableName: mealSchema.tableName,
-    jsonSchema: mealSchema,
-  }),*/
+    schema: mongooseSchema(repairSchema.postSchema),
+    tableName: repairSchema.tableName,
+    jsonSchema: repairSchema,
+  }),
 });
