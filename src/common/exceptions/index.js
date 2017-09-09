@@ -6,6 +6,7 @@ const UserNotActive = require('common/exceptions/userNotActive.error');
 const Forbidden = require('common/exceptions/forbidden.error');
 const DuplicateRecord = require('common/exceptions/duplicate.error');
 const InvalidFilterQuery = require('common/exceptions/invalidFilterQuery.error.js');
+const FacilityOccupied = require('common/exceptions/facilityOccupied.error.js');
 
 module.exports = {
   UserNotActive,
@@ -16,4 +17,5 @@ module.exports = {
   PasswordMismatch,
   DuplicateRecord,
   InvalidFilterQuery,
+  FacilityOccupied,
 };

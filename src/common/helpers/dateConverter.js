@@ -9,6 +9,20 @@ const moment = require('moment');
 const addDays = input => moment(input.date).add(input.count, 'days').format(input.format || 'YYYY-MM-DD');
 
 /**
+ * Adds 1 hour time to a date-time string
+ *
+ * @param input
+ * @returns 'string'
+ */
+const addTime = (input) => {
+  const momentTime = moment(`${input.date} ${input.time}`).add(input.count, 'hour');
+  return ({
+    date: momentTime.format('YYYY-MM-DD'),
+    time: momentTime.format('HH:mm:ss'),
+  });
+};
+
+/**
  * Adds days to a current date and returns in ISO date format
  *
  * @param amount
@@ -35,6 +49,7 @@ const getRandomNumber = (size) => {
 
 module.exports = {
   addDays,
+  addTime,
   addTimeIso,
   getRandomNumber,
 };
