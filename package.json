@@ -1,0 +1,44 @@
+{
+  "name": "react-node-auto-repair-shop",
+  "version": "0.1.0",
+  "main": "index.js",
+  "repository": "git@github.com:vignesarul/react-node-auto-repair-shop.git",
+  "author": "vignes@toptal.com",
+  "license": "UNLICENSED",
+  "private": true,
+  "directories": {
+    "test": "tests"
+  },
+  "engines": {
+    "node": ">=6.10.0"
+  },
+  "scripts": {
+    "start": "NODE_PATH=./src node ./src/server.js",
+    "test": "yarn start & NODE_PATH=./src ava --fail-fast --watch --verbose --serial",
+    "postinstall": "(NODE_PATH=./src node scripts/populateRolesAdmin.js) &"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
+    "bunyan": "^1.8.10",
+    "express": "^4.15.3",
+    "jsonschema": "^1.1.1",
+    "jsonwebtoken": "^7.4.1",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1",
+    "mongoose": "^4.11.4",
+    "mongoose-unique-validator": "^1.0.5",
+    "sendgrid": "^5.2.0",
+    "uuid": "^3.1.0"
+  },
+  "devDependencies": {
+    "ava": "^0.21.0",
+    "eslint": "^4.3.0",
+    "eslint-config-airbnb-base": "^11.3.1",
+    "eslint-plugin-import": "^2.7.0",
+    "json-schema-faker": "^0.4.3",
+    "raml2html": "^6.4.1",
+    "supertest": "^3.0.0"
+  }
+}
