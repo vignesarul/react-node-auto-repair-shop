@@ -17,15 +17,24 @@ const repair = {
 const postSchema = {
   type: 'object',
   properties: _.omit(repair, 'id'),
-  required: ['title'],
+  required: ['userId', 'title'],
 };
 
-const updateSchema = {
+const updateByUserSchema = {
   type: 'object',
-  properties: _.pick(repair, ['userId', 'completed', 'approved', 'title', 'date', 'time']),
-  anyOf: ['userId', 'completed', 'approved', 'title', 'date', 'time'].map(key => ({ required: [`${key}`] })),
+  properties: _.pick(repair, ['completed', 'date', 'time']),
+  anyOf: ['completed'].map(key => ({ required: [`${key}`] })),
   additionalProperties: false,
 };
+updateByUserSchema.anyOf.push({ required: ['date', 'time'] });
+
+const updateByManagerSchema = {
+  type: 'object',
+  properties: _.pick(repair, ['userId', 'completed', 'approved', 'title', 'date', 'time']),
+  anyOf: ['userId', 'completed', 'approved', 'title'].map(key => ({ required: [`${key}`] })),
+  additionalProperties: false,
+};
+updateByManagerSchema.anyOf.push({ required: ['date', 'time'] });
 
 const querySchema = {
   type: 'object',
@@ -34,7 +43,8 @@ const querySchema = {
 
 module.exports = {
   postSchema,
-  updateSchema,
+  updateByUserSchema,
+  updateByManagerSchema,
   tableName,
   querySchema,
 };

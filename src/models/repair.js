@@ -2,12 +2,11 @@ const Promise = require('bluebird');
 const _ = require('lodash');
 const mongoose = require('mongoose');
 const dateConverter = require('common/helpers/dateConverter');
-const NutritionixClient = require('nutritionix');
 const config = require('common/config/config');
 
-class Meal {
+class Repair {
   /**
-   * Initializes Meal model
+   * Initializes Repair model
    *
    * @param: {
    *  db : database reference
@@ -21,19 +20,15 @@ class Meal {
     this.schema = new mongoose.Schema(options.schema);
     this.model = this.db.model(options.tableName, this.schema);
     this.jsonSchema = options.jsonSchema;
-    this.nutritionix = new NutritionixClient({
-      appId: config.nutritionix.id,
-      appKey: config.nutritionix.key,
-    });
   }
 
   /**
-   * Adds a meal for a user
+   * Adds a repair for a user
    *
    * @param input
    * @returns {*|Promise}
    */
-  addMeal(input) {
+  addRepair(input) {
     const data = _.cloneDeep(input);
     data.createdAt = new Date().toISOString();
     data.updatedAt = new Date().toISOString();
@@ -41,49 +36,49 @@ class Meal {
   }
 
   /**
-   * Updates an existing meal using mealId
+   * Updates an existing repair using repairId
    *
-   * @param mealId
+   * @param repairId
    * @param input
    * @returns {*|Promise}
    */
-  updateMeal(mealId, input) {
+  updateRepair(repairId, input) {
     const updatedAt = { updatedAt: new Date().toISOString() };
-    return this.model.findByIdAndUpdate(mealId, { $set: _.merge(updatedAt, input) }, { new: true });
+    return this.model.findByIdAndUpdate(repairId, { $set: _.merge(updatedAt, input) }, { new: true });
   }
 
   /**
-   * Deletes a meal using mealId
+   * Deletes a repair using repairId
    *
-   * @param mealId
+   * @param repairId
    * @returns {*|Promise}
    */
-  deleteMeal(mealId) {
-    return this.model.findByIdAndRemove(mealId);
+  deleteRepair(repairId) {
+    return this.model.findByIdAndRemove(repairId);
   }
 
   /**
-   * Deletes all meals using userId
+   * Deletes all repairs using userId
    *
-   * @param mealId
+   * @param repairId
    * @returns {*|Promise}
    */
-  deleteMealsByUserId(userId) {
+  deleteRepairsByUserId(userId) {
     return this.model.deleteMany({ userId });
   }
 
   /**
-   * Fetches a meal using MealId
+   * Fetches a repair using RepairId
    *
-   * @param mealId
+   * @param repairId
    * @returns {*|Promise}
    */
-  getMeal(mealId) {
-    return this.model.findById(mealId);
+  getRepair(repairId) {
+    return this.model.findById(repairId);
   }
 
   /**
-   * Queries meals collection using the given query. Handles pagination as well.
+   * Queries repairs collection using the given query. Handles pagination as well.
    *
    * @param input
    * @param page
@@ -92,7 +87,7 @@ class Meal {
    * @param sortby
    * @returns {*|Promise}
    */
-  queryMeal(input, { page, limit = config.listing.limit, order, sortby } = {}) {
+  queryRepair(input, { page, limit = config.listing.limit, order, sortby } = {}) {
     return new Promise((resolve, reject) => {
       let query = this.model.find(input);
       if (Number(page) > 0) query = query.skip((limit || config.listing.limit) * (page - 1));
@@ -129,17 +124,6 @@ class Meal {
   }
 
   /**
-   * Fetches calorie information from nutritionix.com by searching the description of food
-   *
-   * @param food
-   * @returns {*|Promise}
-   */
-  getNutriCalories(food) {
-    return this.nutritionix.natural(food).then(data => parseInt(_.find(data.results[0].nutrients, { usda_tag: 'ENERC_KCAL' }).value || 0, 10))
-      .catch(() => (0));
-  }
-
-  /**
    * Returns the JSON schema of this table
    *
    * @returns {*}
@@ -149,4 +133,4 @@ class Meal {
   }
 }
 
-module.exports = Meal;
+module.exports = Repair;
