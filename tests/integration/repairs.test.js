@@ -1,6 +1,7 @@
 import test from 'ava';
 import jsf from 'json-schema-faker';
 import supertest from 'supertest';
+import moment from 'moment';
 import { app, dbConnection } from 'server';
 import userSchema from 'schema/user';
 import repairSchema from 'schema/repair';
@@ -9,7 +10,9 @@ import config from 'common/config/config';
 
 const request = supertest.agent(config.server.host);
 const userMock = jsf(userSchema.postSchema);
-const repairMock = _.merge({ calories: _.random(10, 100) }, jsf(repairSchema.postSchema));
+const repairMock = jsf(repairSchema.postSchema);
+const momentRandom = () => moment(_.random(21727214, 4092636014));
+const randomDateTime = { date: momentRandom().format('YYYY-MM-DD'), time: momentRandom().format('HH:mm:ss') };
 let userToken;
 let userId;
 let userRepairId;
@@ -101,7 +104,7 @@ test.cb('POST /users/:userId/repairs - it should allow admin to add a repair', (
     .post(`/users/${userId}/repairs`)
     .set('Authorization', adminToken)
     .type('json')
-    .send(repairMock)
+    .send(_.merge(repairMock, randomDateTime))
     .expect('Content-Type', /json/)
     .expect(201)
     .then((res) => {
@@ -111,6 +114,15 @@ test.cb('POST /users/:userId/repairs - it should allow admin to add a repair', (
     }).catch(err => console.log(err));
 });
 
+test.cb('POST /users/:userId/repairs - it should not allow to add repair at same time slot', (t) => {
+  request
+    .post(`/users/${userId}/repairs`)
+    .set('Authorization', adminToken)
+    .type('json')
+    .send(_.merge(repairMock, randomDateTime))
+    .expect('Content-Type', /json/)
+    .expect(409, t.end);
+});
 
 test.cb('POST /users/:userId/repairs - it should not allow user to add a repair', (t) => {
   request
