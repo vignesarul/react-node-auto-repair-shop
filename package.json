@@ -16,7 +16,7 @@
     "start": "NODE_PATH=./src node ./src/server.js",
     "test": "yarn start & NODE_PATH=./src ava --fail-fast --watch --verbose --serial",
     "postinstall": "(NODE_PATH=./src node scripts/populateRolesAdmin.js) &",
-    "react-start": "node scripts/start.js",
+    "react-start": "NODE_PATH=./src node scripts/start.js",
     "react-build": "node scripts/build.js",
     "react-test": "node scripts/test.js --env=jsdom"
   },
@@ -63,6 +63,10 @@
     "react": "^15.6.1",
     "react-dev-utils": "^4.0.1",
     "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
+    "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.15.6",
     "sendgrid": "^5.2.0",
     "style-loader": "0.18.2",
     "sw-precache-webpack-plugin": "0.11.4",
@@ -122,7 +126,10 @@
   },
   "eslintConfig": {
     "extends": "airbnb",
-    "plugins": ["import", "react"],
+    "plugins": [
+      "import",
+      "react"
+    ],
     "env": {
       "browser": true,
       "node": true
