@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 const SideBar = props => (<div className="col-md-3">
   <ul className="nav nav-pills flex-column">
     <li className="nav-item">
-      <Link to={`/users/${props.userId}/meals/create`} className="nav-link"><i className="fa fa-home" /> Add Meal</Link>
+      <Link to={`/users/${props.userId}/repairs/create`} className="nav-link"><i className="fa fa-home" /> Add Meal</Link>
     </li>
     <li className="nav-item">
       <Link to="/users" className="nav-link"><i className="fa fa-home" /> List Users</Link>
@@ -14,7 +14,7 @@ const SideBar = props => (<div className="col-md-3">
       <Link to={`/users/edit/${props.userId}`} className="nav-link"><i className="fa fa-home" /> Edit my profile</Link>
     </li>
     <li className="nav-item">
-      <Link to={`/users/${props.userId}/meals`} className="nav-link"><i className="fa fa-home" /> View my meals</Link>
+      <Link to={`/users/${props.userId}/repairs`} className="nav-link"><i className="fa fa-home" /> View my repairs</Link>
     </li>
   </ul>
   <hr className="" />

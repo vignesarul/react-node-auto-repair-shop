@@ -44,8 +44,6 @@ class RepairController {
     const defaultValues = {
       userId: req.userId.id,
       createdBy: req.user.id,
-      completed: false,
-      approved: false,
     };
     const body = _.merge(req.body, defaultValues);
     validator.buildParams({ input: body, schema: this.jsonSchema.postSchema })

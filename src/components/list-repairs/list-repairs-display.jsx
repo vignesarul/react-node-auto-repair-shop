@@ -1,12 +1,34 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import Sidebar from 'components/sidebar/sidebar-container';
 import AlertMessage from 'components/alert-box/alert-box-display';
+import { addTime } from 'common/helpers/dateConverter';
+
+const ActionButtons = (props) => {
+  if (props.approved) {
+    return <i className="fa fa-check-circle-o" style={{ color: 'green' }} title="Completed & Approved" />;
+  } else if (props.completed) {
+    return <button type="button" className="btn btn-secondary btn-sm" data-userId={props.userId} data-id={props.id} onClick={props.markApproved}>Mark Approved</button>;
+  }
+  return <button type="button" className="btn btn-secondary btn-sm" data-userId={props.userId} data-id={props.id} onClick={props.markCompleted}>Mark Completed</button>;
+};
+
+ActionButtons.propTypes = {
+  id: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
+  approved: PropTypes.bool.isRequired,
+  completed: PropTypes.bool.isRequired,
+  markApproved: PropTypes.func.isRequired,
+  markCompleted: PropTypes.func.isRequired,
+};
 
 class ListRepairs extends React.Component {
   componentDidMount() {
-    this.props.retriveRepairs(this.props.match.params.userId);
+    if (this.props.repairsList.length === 0) {
+      this.props.retriveRepairs(this.props.match.params.userId);
+    }
   }
 
   componentWillReceiveProps(props) {
@@ -16,38 +38,38 @@ class ListRepairs extends React.Component {
   }
 
   render() {
-    console.log('this.props', this.props);
     return (<div className="py-5">
       <div className="container">
         <div className="row">
           <Sidebar userId={this.props.user.id} />
           <div className="col-md-9">
+            <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+              <button type="button" className="btn btn-secondary btn-sm" data-userId={this.props.match.params.userId} onClick={this.props.refreshData}>Refresh Data</button>
+            </div>
             <div className="card">
-              <div className="card-header">Users</div>
+              <div className="card-header">Repairs</div>
               {(this.props.info || this.props.error) ? <AlertMessage message={this.props} /> : ''}
               <div className="card-block">
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>#</th>
-                      <th>Desc</th>
-                      <th>Calories</th>
-                      <th>DailyGoal</th>
+                      <th>Title</th>
+                      <th>User</th>
+                      <th>Time</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {(this.props.isLoading ? [] : (this.props.repairsList || [])).map(repair => (<tr key={repair.id}>
-                      <td>{repair.id}</td>
-                      <td>{repair.attributes.text}</td>
-                      <td>{repair.attributes.calories}</td>
-                      <td><i
-                        className={repair.attributes.dailyGoal ? 'fa fa-check' : 'fa fa-close'}
-                        style={{ color: repair.attributes.dailyGoal ? 'green' : 'red' }}
-                      /></td>
+                      <td>{repair.attributes.title}</td>
+                      <td>{repair.attributes.userId}</td>
                       <td>
-                        <Link to={`/users/${repair.userId}/repairs/${repair.id}`}><i className="fa fa-edit" /></Link> &nbsp;
-                        <Link to={`/users/${repair.userId}/repairs/${repair.id}`}><i className="fa fa-trash" /></Link>
+                        {repair.attributes.date} {repair.attributes.time} to <br />
+                        {addTime(_.pick(repair.attributes, ['date', 'time'])).date} {addTime(_.pick(repair.attributes, ['date', 'time'])).time}</td>
+                      <td>
+                        <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}><i className="fa fa-edit" /></Link> &nbsp;
+                        <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}><i className="fa fa-trash" /></Link> &nbsp;
+                        <ActionButtons {...repair.attributes} id={repair.id} markApproved={this.props.markApproved} markCompleted={this.props.markCompleted} />
                       </td>
                     </tr>))}
                   </tbody>
@@ -71,14 +93,17 @@ ListRepairs.propTypes = {
   }),
   match: PropTypes.shape({
     params: PropTypes.shape({
-      userId: PropTypes.string,
-    }),
+      userId: PropTypes.string.isRequired,
+    }).isRequired,
   }).isRequired,
   repairsList: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string,
   })),
   isLoading: PropTypes.bool.isRequired,
   retriveRepairs: PropTypes.func.isRequired,
+  markApproved: PropTypes.func.isRequired,
+  markCompleted: PropTypes.func.isRequired,
+  refreshData: PropTypes.func.isRequired,
 };
 
 ListRepairs.defaultProps = {
