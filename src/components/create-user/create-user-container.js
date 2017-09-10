@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
 import CreateUser from 'components/create-user/create-user-display';
+import _ from 'lodash';
 
 // Map Redux state to component props
 function mapStateToProps(state) {
-  return state.user;
+  return _.cloneDeep(state).user;
 }
 
 // Map Redux actions to component props

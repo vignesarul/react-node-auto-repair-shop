@@ -10,6 +10,16 @@ function* watchCreateAccount() {
   yield takeEvery('CREATE_ACCOUNT', createAccountAsync);
 }
 
+function* loginAsync(action) {
+  const response = yield call(callApi, 'post', '/auth/login', action.requestBody);
+  yield put({ type: 'LOGIN_RESPONSE', response });
+}
+
+function* watchLogin() {
+  yield takeEvery('LOGIN', loginAsync);
+}
+
 export default () => ([
   watchCreateAccount(),
+  watchLogin(),
 ]);

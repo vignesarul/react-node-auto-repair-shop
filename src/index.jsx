@@ -17,7 +17,7 @@ const sagaMiddleware = createSagaMiddleware();
 // Intial storedata
 const initialStore = {
   user: {
-    error: '',
+    error: {},
     info: '',
     isLoading: false,
   },

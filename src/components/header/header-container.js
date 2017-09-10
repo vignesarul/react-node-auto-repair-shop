@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 // Map Redux state to component props
 function mapStateToProps(state) {
-  return _.cloneDeep(state);
+  return _.cloneDeep(state).user;
 }
 
 // Map Redux actions to component props
