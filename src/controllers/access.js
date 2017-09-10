@@ -33,7 +33,7 @@ class AccessController {
       .then(input => validator.validate({ input, schema: this.jsonSchema.postSchema }))
       .then(input => this.model.createAccessLog(input))
       .then(input => this.model.createJwtToken(input))
-      .then(result => {
+      .then((result) => {
         const userData = serializer.serialize(req.user, { type: 'user' });
         const loginData = serializer.serialize(result, { type: 'token' });
         loginData.includes = [userData];

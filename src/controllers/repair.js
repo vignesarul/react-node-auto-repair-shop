@@ -158,7 +158,7 @@ class RepairController {
     if (!input.time) return input;
     const { date: startDate, time: startTime } = dateConverter.addTime({ count: -1, time: input.time, date: input.date });
     const { date: endDate, time: endTime } = dateConverter.addTime({ count: 1, time: input.time, date: input.date });
-    let query = {
+    const query = {
       date: { $gte: startDate, $lte: endDate },
       time: { $gte: startTime, $lte: endTime },
     };

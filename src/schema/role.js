@@ -9,8 +9,8 @@ const role = {
     items: {
       type: 'string',
       minLength: 1,
-      pattern: '^(_\\.){0,1}([a-z]{1,10})([.])([a-z]{1,10})$'
-    }
+      pattern: '^(_\\.){0,1}([a-z]{1,10})([.])([a-z]{1,10})$',
+    },
   },
   level: { type: 'number', minimum: 1, maximum: 10 },
   createdAt: { type: 'string', format: 'date-time' },
