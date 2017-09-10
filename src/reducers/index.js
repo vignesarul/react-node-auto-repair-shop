@@ -1,5 +1,6 @@
-function rootReducer() {
+import { combineReducers } from 'redux';
+import user from 'reducers/user';
 
-}
-
-export default rootReducer;
+export default combineReducers({
+  user,
+});

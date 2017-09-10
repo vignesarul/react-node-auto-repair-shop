@@ -11,3 +11,4 @@ rules:
   import/extensions: off
   import/no-extraneous-dependencies: off
   no-extend-native: off
+  max-len: off
