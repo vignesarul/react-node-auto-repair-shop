@@ -1,22 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-const AlertMessage = (props) => {
-  let message = props.message.info;
-  if (props.message.error) {
-    message = `${props.message.error.code}: ${(props.message.error.source || {}).parameter || ''}`;
-  }
-  return (<div className={`alert alert-${props.message.error ? 'danger' : 'info'}`} role="alert">
-    <p className="mb-0">{message}</p>
-  </div>);
-};
-
-AlertMessage.propTypes = {
-  message: PropTypes.shape({
-    info: PropTypes.string,
-    error: PropTypes.string,
-  }).isRequired,
-};
+import AlertMessage from 'components/alert-box/alert-box-display';
 
 class CreateUser extends React.Component {
   componentWillReceiveProps(props) {

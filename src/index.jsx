@@ -11,12 +11,20 @@ import createSagaMiddleware from 'redux-saga';
 import rootSaga from 'redux-sagas';
 import registerServiceWorker from './registerServiceWorker';
 
+/* eslint-disable no-underscore-dangle */
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
+/* eslint-enable */
 registerServiceWorker();
 const sagaMiddleware = createSagaMiddleware();
 
 // Intial storedata
 const initialStore = {
   user: {
+    error: {},
+    info: '',
+    isLoading: false,
+  },
+  repair: {
     error: {},
     info: '',
     isLoading: false,
@@ -31,14 +39,16 @@ const persistConfig = {
 const reducer = persistReducer(persistConfig, rootReducer);
 
 // Store
-const store = createStore(reducer, initialStore, applyMiddleware(sagaMiddleware));
-persistStore(store);
+const store = createStore(reducer, initialStore, composeEnhancers(applyMiddleware(sagaMiddleware)));
+const initApp = () => {
+  const App = () => (<Provider store={store}>
+    <BrowserRouter>
+      <Routes />
+    </BrowserRouter>
+  </Provider>);
+
+  ReactDOM.render(<App />, document.getElementById('root'));
+};
+
+persistStore(store, {}, () => initApp());
 sagaMiddleware.run(rootSaga);
-
-const App = () => (<Provider store={store}>
-  <BrowserRouter>
-    <Routes />
-  </BrowserRouter>
-</Provider>);
-
-ReactDOM.render(<App />, document.getElementById('root'));

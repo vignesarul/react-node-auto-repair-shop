@@ -11,7 +11,7 @@ class Header extends React.Component {
   render() {
     return (<nav className="navbar navbar-expand-md navbar-light bg-faded">
       <div className="container">
-        <a className="navbar-brand">Calorie Tracker</a>
+        <a className="navbar-brand">Repair Shop</a>
         <button
           className="navbar-toggler navbar-toggler-right"
           type="button"
@@ -39,9 +39,15 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-  token: PropTypes.string.isRequired,
-  history: PropTypes.arrayOf(PropTypes.string).isRequired,
+  token: PropTypes.string,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   doLogout: PropTypes.func.isRequired,
+};
+
+Header.defaultProps = {
+  token: '',
 };
 
 export default Header;
