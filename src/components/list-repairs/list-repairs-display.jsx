@@ -44,7 +44,10 @@ class ListRepairs extends React.Component {
           <Sidebar userId={this.props.user.id} />
           <div className="col-md-9">
             <div style={{ textAlign: 'right', marginBottom: '10px' }}>
-              <button type="button" className="btn btn-secondary btn-sm" data-userId={this.props.match.params.userId} onClick={this.props.refreshData}>Refresh Data</button>
+              <button type="button" className={this.props.isLoading ? 'btn btn-warning btn-sm' : 'btn btn-secondary btn-sm'} disabled={this.props.isLoading} data-userId={this.props.match.params.userId} onClick={this.props.refreshData}>
+                {this.props.isLoading ? <i className="fa fa-spinner" /> : ''}
+                Refresh Data
+              </button>
             </div>
             <div className="card">
               <div className="card-header">Repairs</div>
@@ -60,7 +63,7 @@ class ListRepairs extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {(this.props.isLoading ? [] : (this.props.repairsList || [])).map(repair => (<tr key={repair.id}>
+                    {(this.props.repairsList || []).map(repair => (<tr key={repair.id}>
                       <td>{repair.attributes.title}</td>
                       <td>{repair.attributes.userId}</td>
                       <td>
