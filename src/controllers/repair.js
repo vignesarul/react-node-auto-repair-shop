@@ -103,8 +103,8 @@ class RepairController {
     const data = _.omit(req.body, req.body.completed === false ? 'completed' : '');
     validator.buildParams({ input: data, schema: this.jsonSchema.updateByUserSchema })
       .then(input => validator.validate({ input, schema: this.jsonSchema.updateByUserSchema }))
-      .then(input => this.checkRepairTimeSlot(input))
-      .then(input => this.model.updateRepair(req.params.repairId, input))
+      .then(input => this.checkRepairTimeSlot(_.merge(input, { id: req.params.repairId })))
+      .then(input => this.model.updateRepair(req.params.repairId, _.omit(input, 'id')))
       .then(result => res.status(200).send(serializer.serialize(result.toObject(), { type: 'repairs' })))
       .catch(error => next(error));
   }
@@ -120,8 +120,8 @@ class RepairController {
     const data = _.merge(req.body, {});
     validator.buildParams({ input: data, schema: this.jsonSchema.updateByManagerSchema })
       .then(input => validator.validate({ input, schema: this.jsonSchema.updateByManagerSchema }))
-      .then(input => this.checkRepairTimeSlot(input))
-      .then(input => this.model.updateRepair(req.params.repairId, input))
+      .then(input => this.checkRepairTimeSlot(_.merge(input, { id: req.params.repairId })))
+      .then(input => this.model.updateRepair(req.params.repairId, _.omit(input, 'id')))
       .then(result => res.status(200).send(serializer.serialize(result.toObject(), { type: 'repairs' })))
       .catch(error => next(error));
   }

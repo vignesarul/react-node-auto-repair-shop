@@ -39,7 +39,7 @@ function repairReducer(state = null, action) {
       const updatedList = _.cloneDeep(state.repairsList);
       updatedList[_.findIndex(updatedList, { id: action.response.data[0].id })] = action.response.data[0];
       return _.assign(_.cloneDeep(state), {
-        isLoading: false, error: {}, info: '', repairsList: updatedList,
+        isLoading: false, error: {}, info: 'Repair Updated Successfully', repairsList: updatedList,
       });
     }
     case 'UPDATE_REPAIR_BY_USER':

@@ -37,6 +37,21 @@ function userReducer(state = null, action) {
           [action.response.data[0].id]: action.response.data[0],
         },
       }));
+    case 'GET_ALL_USERS':
+      return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
+    case 'GET_ALL_USERS_RESPONSE': {
+      if (action.response.errors.length > 0) {
+        return _.assign(_.cloneDeep(state), { isLoading: false, error: action.response.errors[0] });
+      }
+      const users = {};
+      action.response.data.forEach((data) => {
+        users[data.id] = data;
+      });
+      return (_.merge(_.cloneDeep(state), {
+        isLoading: false,
+        users,
+      }));
+    }
     default:
       return state;
   }

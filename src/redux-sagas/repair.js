@@ -31,7 +31,7 @@ function* watchAddRepair() {
 
 function* updateRepairByAdminAsync(action) {
   const token = yield select(getToken);
-  const response = yield call(callApi, 'put', `/users/${action.requestBody.userId}/repairs/${action.requestBody.repairId}/manage`, action.requestBody, { headers: {
+  const response = yield call(callApi, 'put', `/users/${action.requestBody.repairOwnerId || action.requestBody.userId}/repairs/${action.requestBody.repairId}/manage`, action.requestBody, { headers: {
     authorization: token,
   } });
   yield put({ type: 'UPDATE_REPAIR_BY_ADMIN_RESPONSE', response });

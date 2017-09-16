@@ -33,8 +33,21 @@ function* watchGetUser() {
   yield takeEvery('GET_USER', getUserAsync);
 }
 
+function* getAllUsersAsync() {
+  const token = yield select(getToken);
+  const response = yield call(callApi, 'get', '/users', { headers: {
+    authorization: token,
+  } });
+  yield put({ type: 'GET_ALL_USERS_RESPONSE', response });
+}
+
+function* watchGetAllUsers() {
+  yield takeEvery('GET_ALL_USERS', getAllUsersAsync);
+}
+
 export default () => ([
   watchCreateAccount(),
   watchLogin(),
   watchGetUser(),
+  watchGetAllUsers(),
 ]);

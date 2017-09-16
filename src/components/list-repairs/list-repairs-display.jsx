@@ -39,16 +39,13 @@ class ListRepairs extends React.Component {
     }
   }
 
-  componentDidMount() {
-    const { repairStore } = this.props;
-    (repairStore.repairsList || []).forEach(repair => this.getUserName(repair.attributes.userId, true));
-  }
-
   componentWillReceiveProps(props) {
     const { actionMethods } = this.props;
+    const { repairStore } = props;
     if (props.match.params.userId !== this.props.match.params.userId) {
       actionMethods.retriveRepairs(props.match.params.userId);
     }
+    (repairStore.repairsList || []).forEach(repair => this.getUserName(repair.attributes.userId, true));
   }
 
   getUserName(userId, getFromApi = false) {
@@ -73,7 +70,7 @@ class ListRepairs extends React.Component {
             </div>
             <div className="card">
               <div className="card-header">Repairs</div>
-              {(repairStore.info || repairStore.error) ? <AlertMessage message={this.props} /> : ''}
+              {(repairStore.info || repairStore.error) ? <AlertMessage message={repairStore} /> : ''}
               <div className="card-block">
                 <table className="table">
                   <thead>
@@ -92,7 +89,7 @@ class ListRepairs extends React.Component {
                         {repair.attributes.date} {repair.attributes.time} to <br />
                         {addTime(_.pick(repair.attributes, ['date', 'time'])).date} {addTime(_.pick(repair.attributes, ['date', 'time'])).time}</td>
                       <td>
-                        <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}><i className="fa fa-edit" /></Link> &nbsp;
+                        <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}/edit`}><i className="fa fa-edit" /></Link> &nbsp;
                         <i role="button" tabIndex={-1} className="fa fa-trash" data-userId={repair.attributes.userId} data-id={repair.id} onClick={actionMethods.deleteRepair} /> &nbsp;
                         <ActionButtons {...repair.attributes} id={repair.id} role={userStore.user.attributes.roles} markApproved={actionMethods.markApproved} markCompleted={actionMethods.markCompleted} markIncomplete={actionMethods.markIncomplete} />
                       </td>
