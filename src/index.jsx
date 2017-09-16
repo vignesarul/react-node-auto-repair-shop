@@ -23,11 +23,13 @@ const initialStore = {
     error: {},
     info: '',
     isLoading: false,
+    users: {},
   },
   repair: {
     error: {},
     info: '',
     isLoading: false,
+    repairsList: [],
   },
 };
 

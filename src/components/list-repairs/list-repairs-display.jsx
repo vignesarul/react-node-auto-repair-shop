@@ -28,33 +28,48 @@ ActionButtons.propTypes = {
 };
 
 class ListRepairs extends React.Component {
-  componentDidMount() {
-    if (this.props.repairsList.length === 0) {
-      this.props.retriveRepairs(this.props.match.params.userId);
+  componentWillMount() {
+    const { repairStore, actionMethods } = this.props;
+    if (repairStore.repairsList && repairStore.repairsList.length === 0) {
+      actionMethods.retriveRepairs(this.props.match.params.userId);
     }
+  }
+
+  componentDidMount() {
+    const { repairStore } = this.props;
+    (repairStore.repairsList || []).forEach(repair => this.getUserName(repair.attributes.userId, true));
   }
 
   componentWillReceiveProps(props) {
+    const { actionMethods } = this.props;
     if (props.match.params.userId !== this.props.match.params.userId) {
-      this.props.retriveRepairs(props.match.params.userId);
+      actionMethods.retriveRepairs(props.match.params.userId);
     }
   }
 
+  getUserName(userId, getFromApi = false) {
+    const { userStore, actionMethods } = this.props;
+    if ((userStore.users || {})[userId]) return userStore.users[userId].attributes.firstName;
+    if (_.isEmpty(userStore.error) && !userStore.isLoading && getFromApi) return actionMethods.getUser(userId);
+    return userId;
+  }
+
   render() {
+    const { repairStore, userStore, actionMethods } = this.props;
     return (<div className="py-5">
       <div className="container">
         <div className="row">
-          <Sidebar userId={this.props.user.id} />
+          <Sidebar />
           <div className="col-md-9">
             <div style={{ textAlign: 'right', marginBottom: '10px' }}>
-              <button type="button" className={this.props.isLoading ? 'btn btn-warning btn-sm' : 'btn btn-secondary btn-sm'} disabled={this.props.isLoading} data-userId={this.props.match.params.userId} onClick={this.props.refreshData}>
-                {this.props.isLoading ? <i className="fa fa-spinner" /> : ''}
+              <button type="button" className={repairStore.isLoading ? 'btn btn-warning btn-sm' : 'btn btn-secondary btn-sm'} disabled={repairStore.isLoading} data-userId={this.props.match.params.userId} onClick={actionMethods.refreshData}>
+                {repairStore.isLoading ? <i className="fa fa-spinner" /> : ''}
                 Refresh Data
               </button>
             </div>
             <div className="card">
               <div className="card-header">Repairs</div>
-              {(this.props.info || this.props.error) ? <AlertMessage message={this.props} /> : ''}
+              {(repairStore.info || repairStore.error) ? <AlertMessage message={this.props} /> : ''}
               <div className="card-block">
                 <table className="table">
                   <thead>
@@ -66,17 +81,16 @@ class ListRepairs extends React.Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {(this.props.repairsList || []).map(repair => (<tr key={repair.id}>
+                    {(repairStore.repairsList || []).map(repair => (<tr key={repair.id}>
                       <td>{repair.attributes.title}</td>
-                      <td>{repair.attributes.userId}</td>
+                      <td>{this.getUserName(repair.attributes.userId)}</td>
                       <td>
                         {repair.attributes.date} {repair.attributes.time} to <br />
                         {addTime(_.pick(repair.attributes, ['date', 'time'])).date} {addTime(_.pick(repair.attributes, ['date', 'time'])).time}</td>
                       <td>
                         <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}><i className="fa fa-edit" /></Link> &nbsp;
                         <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}><i className="fa fa-trash" /></Link> &nbsp;
-                        {console.log(this.props)}
-                        <ActionButtons {...repair.attributes} id={repair.id} role={this.props.user.attributes.roles} markApproved={this.props.markApproved} markCompleted={this.props.markCompleted} />
+                        <ActionButtons {...repair.attributes} id={repair.id} role={userStore.user.attributes.roles} markApproved={actionMethods.markApproved} markCompleted={actionMethods.markCompleted} />
                       </td>
                     </tr>))}
                   </tbody>
@@ -91,29 +105,39 @@ class ListRepairs extends React.Component {
 }
 
 ListRepairs.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.string,
-    attributes: PropTypes.shape({
-      roles: PropTypes.string.isRequired,
+  userStore: PropTypes.shape({
+    user: PropTypes.shape({
+      id: PropTypes.string,
+      attributes: PropTypes.shape({
+        roles: PropTypes.string.isRequired,
+      }),
     }),
-  }),
-  info: PropTypes.string,
-  error: PropTypes.shape({
-    code: PropTypes.string,
-  }),
+    error: PropTypes.shape({
+      code: PropTypes.string,
+    }),
+    isLoading: PropTypes.bool.isRequired,
+  }).isRequired,
+  repairStore: PropTypes.shape({
+    info: PropTypes.string,
+    error: PropTypes.shape({
+      code: PropTypes.string,
+    }),
+    repairsList: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.string,
+    })),
+    isLoading: PropTypes.bool.isRequired,
+  }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       userId: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
-  repairsList: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string,
-  })),
-  isLoading: PropTypes.bool.isRequired,
-  retriveRepairs: PropTypes.func.isRequired,
-  markApproved: PropTypes.func.isRequired,
-  markCompleted: PropTypes.func.isRequired,
-  refreshData: PropTypes.func.isRequired,
+  actionMethods: PropTypes.shape({
+    retriveRepairs: PropTypes.func.isRequired,
+    markApproved: PropTypes.func.isRequired,
+    markCompleted: PropTypes.func.isRequired,
+    refreshData: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 ListRepairs.defaultProps = {
