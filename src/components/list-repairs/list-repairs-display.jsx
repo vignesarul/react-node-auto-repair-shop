@@ -9,14 +9,17 @@ import { addTime } from 'common/helpers/dateConverter';
 const ActionButtons = (props) => {
   if (props.approved) {
     return <i className="fa fa-check-circle-o" style={{ color: 'green' }} title="Completed & Approved" />;
-  } else if (props.completed) {
+  } else if (props.completed && props.role !== 'user') {
     return <button type="button" className="btn btn-secondary btn-sm" data-userId={props.userId} data-id={props.id} onClick={props.markApproved}>Mark Approved</button>;
+  } else if ((props.completed && props.role === 'user')) {
+    return <i className="fa fa-hourglass-half" style={{ color: '#fb9d18' }} title="Completed" />;
   }
-  return <button type="button" className="btn btn-secondary btn-sm" data-userId={props.userId} data-id={props.id} onClick={props.markCompleted}>Mark Completed</button>;
+  return <button type="button" className="btn btn-secondary btn-sm" data-userId={props.userId} data-id={props.id} data-role={props.role} onClick={props.markCompleted}>Mark Completed</button>;
 };
 
 ActionButtons.propTypes = {
   id: PropTypes.string.isRequired,
+  role: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
   approved: PropTypes.bool.isRequired,
   completed: PropTypes.bool.isRequired,
@@ -72,7 +75,8 @@ class ListRepairs extends React.Component {
                       <td>
                         <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}><i className="fa fa-edit" /></Link> &nbsp;
                         <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}><i className="fa fa-trash" /></Link> &nbsp;
-                        <ActionButtons {...repair.attributes} id={repair.id} markApproved={this.props.markApproved} markCompleted={this.props.markCompleted} />
+                        {console.log(this.props)}
+                        <ActionButtons {...repair.attributes} id={repair.id} role={this.props.user.attributes.roles} markApproved={this.props.markApproved} markCompleted={this.props.markCompleted} />
                       </td>
                     </tr>))}
                   </tbody>
@@ -89,6 +93,9 @@ class ListRepairs extends React.Component {
 ListRepairs.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.string,
+    attributes: PropTypes.shape({
+      roles: PropTypes.string.isRequired,
+    }),
   }),
   info: PropTypes.string,
   error: PropTypes.shape({

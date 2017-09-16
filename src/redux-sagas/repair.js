@@ -41,8 +41,21 @@ function* watchUpdateByAdminRepair() {
   yield takeEvery('UPDATE_REPAIR_BY_ADMIN', updateRepairByAdminAsync);
 }
 
+function* updateRepairByUserAsync(action) {
+  const token = yield select(getToken);
+  const response = yield call(callApi, 'put', `/users/${action.requestBody.userId}/repairs/${action.requestBody.repairId}`, action.requestBody, { headers: {
+    authorization: token,
+  } });
+  yield put({ type: 'UPDATE_REPAIR_BY_USER_RESPONSE', response });
+}
+
+function* watchUpdateByUserRepair() {
+  yield takeEvery('UPDATE_REPAIR_BY_USER', updateRepairByUserAsync);
+}
+
 export default () => ([
   watchGetRepairs(),
   watchAddRepair(),
   watchUpdateByAdminRepair(),
+  watchUpdateByUserRepair(),
 ]);
