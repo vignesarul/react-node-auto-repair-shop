@@ -36,6 +36,14 @@ function mapDispatchToProps(dispatch) {
         };
         dispatch({ type: role === 'user' ? 'UPDATE_REPAIR_BY_USER' : 'UPDATE_REPAIR_BY_ADMIN', requestBody });
       },
+      markIncomplete: (e) => {
+        const requestBody = {
+          userId: e.target.getAttribute('data-userId'),
+          repairId: e.target.getAttribute('data-id'),
+          completed: false,
+        };
+        dispatch({ type: 'UPDATE_REPAIR_BY_ADMIN', requestBody });
+      },
       markApproved: (e) => {
         const requestBody = {
           userId: e.target.getAttribute('data-userId'),
@@ -43,6 +51,13 @@ function mapDispatchToProps(dispatch) {
           approved: true,
         };
         dispatch({ type: 'UPDATE_REPAIR_BY_ADMIN', requestBody });
+      },
+      deleteRepair: (e) => {
+        const requestBody = {
+          userId: e.target.getAttribute('data-userId'),
+          repairId: e.target.getAttribute('data-id'),
+        };
+        dispatch({ type: 'DELETE_REPAIR', requestBody });
       },
       getUser: (userId) => {
         const requestBody = {

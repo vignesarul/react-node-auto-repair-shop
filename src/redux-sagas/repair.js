@@ -53,9 +53,25 @@ function* watchUpdateByUserRepair() {
   yield takeEvery('UPDATE_REPAIR_BY_USER', updateRepairByUserAsync);
 }
 
+function* deleteRepairAsync(action) {
+  const token = yield select(getToken);
+  const response = yield call(callApi, 'delete', `/users/${action.requestBody.userId}/repairs/${action.requestBody.repairId}`, { headers: {
+    authorization: token,
+  } });
+  yield put({ type: 'DELETE_REPAIR_RESPONSE',
+    response: _.merge(response, {
+      repairId: action.requestBody.repairId,
+    }) });
+}
+
+function* watchDeleteRepair() {
+  yield takeEvery('DELETE_REPAIR', deleteRepairAsync);
+}
+
 export default () => ([
   watchGetRepairs(),
   watchAddRepair(),
   watchUpdateByAdminRepair(),
   watchUpdateByUserRepair(),
+  watchDeleteRepair(),
 ]);

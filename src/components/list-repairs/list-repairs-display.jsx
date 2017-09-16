@@ -10,7 +10,10 @@ const ActionButtons = (props) => {
   if (props.approved) {
     return <i className="fa fa-check-circle-o" style={{ color: 'green' }} title="Completed & Approved" />;
   } else if (props.completed && props.role !== 'user') {
-    return <button type="button" className="btn btn-secondary btn-sm" data-userId={props.userId} data-id={props.id} onClick={props.markApproved}>Mark Approved</button>;
+    return (<div>
+      <button type="button" className="btn btn-secondary btn-sm" data-userId={props.userId} data-id={props.id} onClick={props.markIncomplete}>Mark Incomplete</button>
+      <button type="button" className="btn btn-secondary btn-sm" data-userId={props.userId} data-id={props.id} onClick={props.markApproved}>Mark Approved</button>
+    </div>);
   } else if ((props.completed && props.role === 'user')) {
     return <i className="fa fa-hourglass-half" style={{ color: '#fb9d18' }} title="Completed" />;
   }
@@ -25,6 +28,7 @@ ActionButtons.propTypes = {
   completed: PropTypes.bool.isRequired,
   markApproved: PropTypes.func.isRequired,
   markCompleted: PropTypes.func.isRequired,
+  markIncomplete: PropTypes.func.isRequired,
 };
 
 class ListRepairs extends React.Component {
@@ -89,8 +93,8 @@ class ListRepairs extends React.Component {
                         {addTime(_.pick(repair.attributes, ['date', 'time'])).date} {addTime(_.pick(repair.attributes, ['date', 'time'])).time}</td>
                       <td>
                         <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}><i className="fa fa-edit" /></Link> &nbsp;
-                        <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}><i className="fa fa-trash" /></Link> &nbsp;
-                        <ActionButtons {...repair.attributes} id={repair.id} role={userStore.user.attributes.roles} markApproved={actionMethods.markApproved} markCompleted={actionMethods.markCompleted} />
+                        <i role="button" tabIndex={-1} className="fa fa-trash" data-userId={repair.attributes.userId} data-id={repair.id} onClick={actionMethods.deleteRepair} /> &nbsp;
+                        <ActionButtons {...repair.attributes} id={repair.id} role={userStore.user.attributes.roles} markApproved={actionMethods.markApproved} markCompleted={actionMethods.markCompleted} markIncomplete={actionMethods.markIncomplete} />
                       </td>
                     </tr>))}
                   </tbody>

@@ -55,6 +55,19 @@ function repairReducer(state = null, action) {
         isLoading: false, error: {}, info: '', repairsList: updatedList,
       });
     }
+    case 'DELETE_REPAIR':
+      return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
+    case 'DELETE_REPAIR_RESPONSE': {
+      if ((action.response.errors || []).length > 0) {
+        return _.merge(_.cloneDeep(state), { isLoading: false, error: action.response.errors[0] });
+      }
+      console.log('deleted repair', action.response.data);
+      const updatedList = _.cloneDeep(state.repairsList);
+      _.remove(updatedList, { id: action.response.repairId });
+      return _.assign(_.cloneDeep(state), {
+        isLoading: false, error: {}, info: '', repairsList: updatedList,
+      });
+    }
     default:
       return state;
   }
