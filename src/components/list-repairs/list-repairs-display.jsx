@@ -33,10 +33,8 @@ ActionButtons.propTypes = {
 
 class ListRepairs extends React.Component {
   componentWillMount() {
-    const { repairStore, actionMethods } = this.props;
-    if (repairStore.repairsList && repairStore.repairsList.length === 0) {
-      actionMethods.retriveRepairs(this.props.match.params.userId);
-    }
+    const { actionMethods } = this.props;
+    actionMethods.retriveRepairs(this.props.match.params.userId);
   }
 
   componentWillReceiveProps(props) {
