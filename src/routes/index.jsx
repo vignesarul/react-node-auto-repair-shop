@@ -8,6 +8,7 @@ import EditUser from 'components/edit-user/edit-user-container';
 import ListRepairs from 'components/list-repairs/list-repairs-container';
 import AddRepair from 'components/add-repair/add-repair-container';
 import EditRepair from 'components/edit-repair/edit-repair-container';
+import ViewRepair from 'components/view-repair/view-repair-container';
 
 const Routes = () => (<div>
   <Route path="/(users|roles)" component={Header} />
@@ -19,6 +20,7 @@ const Routes = () => (<div>
     <Route exact path="/users/:userId/repairs" component={ListRepairs} />
     <Route exact path="/users/:userId/repairs/create" component={AddRepair} />
     <Route exact path="/users/:userId/repairs/:repairId/edit" component={EditRepair} />
+    <Route exact path="/users/:userId/repairs/:repairId" component={ViewRepair} />
   </Switch>
 </div>);
 

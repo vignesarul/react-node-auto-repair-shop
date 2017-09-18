@@ -104,7 +104,7 @@ class ListRepairs extends React.Component {
                   </thead>
                   <tbody>
                     {(repairStore.repairsList || []).map(repair => (<tr key={repair.id}>
-                      <td>{repair.attributes.title}</td>
+                      <td><Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}>{repair.attributes.title}</Link></td>
                       <td><Link to={`/users/${repair.attributes.userId}/edit`}>{this.getUserName(repair.attributes.userId)}</Link></td>
                       <td>
                         {repair.attributes.date} {repair.attributes.time} to <br />
