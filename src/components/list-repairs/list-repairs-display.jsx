@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import queryString from 'query-string';
 import Sidebar from 'components/sidebar/sidebar-container';
 import AlertMessage from 'components/alert-box/alert-box-display';
 import { addTime } from 'common/helpers/dateConverter';
@@ -32,25 +33,41 @@ ActionButtons.propTypes = {
 };
 
 class ListRepairs extends React.Component {
+  constructor() {
+    super();
+    this.refreshInitialData = this.refreshInitialData.bind(this);
+  }
   componentWillMount() {
-    const { actionMethods } = this.props;
-    actionMethods.retriveRepairs(this.props.match.params.userId);
+    this.refreshInitialData();
   }
 
   componentWillReceiveProps(props) {
-    const { actionMethods } = this.props;
+    const { actionMethods, location } = this.props;
     const { repairStore } = props;
-    if (props.match.params.userId !== this.props.match.params.userId) {
-      actionMethods.retriveRepairs(props.match.params.userId);
+    const userId = queryString.parse(props.location.search).userId;
+    if (userId && userId !== queryString.parse(location.search).userId) {
+      actionMethods.retriveRepairs(userId);
+    } else if (queryString.parse(location.search).userId && !userId) {
+      this.refreshInitialData(true);
     }
     (repairStore.repairsList || []).forEach(repair => this.getUserName(repair.attributes.userId, true));
   }
 
   getUserName(userId, getFromApi = false) {
-    const { userStore, actionMethods } = this.props;
+    const { userStore, actionMethods, repairStore } = this.props;
     if ((userStore.users || {})[userId]) return userStore.users[userId].attributes.firstName;
-    if (_.isEmpty(userStore.error) && !userStore.isLoading && getFromApi) return actionMethods.getUser(userId);
+    if (_.isEmpty(userStore.error) && !userStore.isLoading && !repairStore.isLoading && getFromApi) return actionMethods.getUser(userId);
     return userId;
+  }
+
+  refreshInitialData(complete) {
+    const { actionMethods, userStore } = this.props;
+    const userIdToList = queryString.parse(this.props.location.search).userId;
+    if (userStore.user.attributes.roles !== 'user' && (!userIdToList || complete)) {
+      actionMethods.refreshAllRepair();
+    } else {
+      actionMethods.retriveRepairs(userIdToList);
+    }
   }
 
   render() {
@@ -61,7 +78,13 @@ class ListRepairs extends React.Component {
           <Sidebar />
           <div className="col-md-9">
             <div style={{ textAlign: 'right', marginBottom: '10px' }}>
-              <button type="button" className={repairStore.isLoading ? 'btn btn-warning btn-sm' : 'btn btn-secondary btn-sm'} disabled={repairStore.isLoading} data-userId={this.props.match.params.userId} onClick={actionMethods.refreshData}>
+              <button
+                type="button"
+                className={repairStore.isLoading ? 'btn btn-warning btn-sm' : 'btn btn-secondary btn-sm'}
+                disabled={repairStore.isLoading}
+                data-userId={this.props.match.params.userId}
+                onClick={this.refreshInitialData}
+              >
                 {repairStore.isLoading ? <i className="fa fa-spinner" /> : ''}
                 Refresh Data
               </button>
@@ -82,7 +105,7 @@ class ListRepairs extends React.Component {
                   <tbody>
                     {(repairStore.repairsList || []).map(repair => (<tr key={repair.id}>
                       <td>{repair.attributes.title}</td>
-                      <td>{this.getUserName(repair.attributes.userId)}</td>
+                      <td><Link to={`/users/${repair.attributes.userId}/edit`}>{this.getUserName(repair.attributes.userId)}</Link></td>
                       <td>
                         {repair.attributes.date} {repair.attributes.time} to <br />
                         {addTime(_.pick(repair.attributes, ['date', 'time'])).date} {addTime(_.pick(repair.attributes, ['date', 'time'])).time}</td>
@@ -131,11 +154,14 @@ ListRepairs.propTypes = {
       userId: PropTypes.string.isRequired,
     }).isRequired,
   }).isRequired,
+  location: PropTypes.shape({
+    search: PropTypes.string,
+  }).isRequired,
   actionMethods: PropTypes.shape({
     retriveRepairs: PropTypes.func.isRequired,
     markApproved: PropTypes.func.isRequired,
     markCompleted: PropTypes.func.isRequired,
-    refreshData: PropTypes.func.isRequired,
+    refreshAllRepair: PropTypes.func.isRequired,
   }).isRequired,
 };
 

@@ -16,6 +16,7 @@ const routes = (express, app, { user, access, role, repair }) => {
   route.get('/users/:userId', access.verifyAuth(), user.populateParamsUserId, user.populateTokenUser(), role.validateRole('users', 'read'), user.showUser);
   route.delete('/users/:userId', access.verifyAuth(), user.populateParamsUserId, user.populateTokenUser(), role.validateRole('users', 'delete'), user.removeUser, repair.removeRepairsByUserId);
 
+  route.get('/repairs', access.verifyAuth(), user.populateTokenUser(), role.validateRole('repairs', 'approve'), repair.listAllRepairs);
   route.get('/users/:userId/repairs', access.verifyAuth(), user.populateParamsUserId, user.populateTokenUser(), role.validateRole('repairs', 'read'), repair.listRepairs);
   route.post('/users/:userId/repairs', access.verifyAuth(), user.populateParamsUserId, user.populateTokenUser(), role.validateRole('repairs', 'write'), repair.addRepair);
   route.put('/users/:userId/repairs/:repairId/manage', access.verifyAuth(), user.populateParamsUserId, user.populateTokenUser(), role.validateRole('repairs', 'approve'), repair.verifyRepairOwner, repair.updateRepairByManager);

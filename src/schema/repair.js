@@ -41,10 +41,16 @@ const querySchema = {
   properties: _.omit(repair, ['userId']),
 };
 
+const querySchemaWithUserId = {
+  type: 'object',
+  properties: _.omit(repair),
+};
+
 module.exports = {
   postSchema,
   updateByUserSchema,
   updateByManagerSchema,
   tableName,
   querySchema,
+  querySchemaWithUserId,
 };

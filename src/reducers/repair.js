@@ -4,8 +4,10 @@ import _ from 'lodash';
 function repairReducer(state = null, action) {
   switch (action.type) {
     case 'GET_REPAIRS':
+    case 'QUERY_REPAIRS':
       return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
     case 'GET_REPAIRS_RESPONSE':
+    case 'QUERY_REPAIRS_RESPONSE':
       if (action.response.errors.length > 0) {
         return _.merge(_.cloneDeep(state), { isLoading: false, error: action.response.errors[0], repairsList: [] });
       }

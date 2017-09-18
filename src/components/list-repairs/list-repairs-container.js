@@ -15,11 +15,9 @@ function mapStateToProps(store) {
 function mapDispatchToProps(dispatch) {
   return {
     actionMethods: {
-      refreshData: (e) => {
-        const requestBody = {
-          userId: e.target.getAttribute('data-userId'),
-        };
-        dispatch({ type: 'GET_REPAIRS', requestBody });
+      refreshAllRepair: () => {
+        const requestBody = {};
+        dispatch({ type: 'QUERY_REPAIRS', requestBody });
       },
       retriveRepairs: (userId) => {
         const requestBody = {

@@ -16,6 +16,18 @@ function* watchGetRepairs() {
   yield takeEvery('GET_REPAIRS', getRepairsAsync);
 }
 
+function* queryRepairsAsync(action) {
+  const token = yield select(getToken);
+  const response = yield call(callApi, 'get', `/repairs?filter=${action.requestBody.filter || ''}`, { headers: {
+    authorization: token,
+  } });
+  yield put({ type: 'QUERY_REPAIRS_RESPONSE', response });
+}
+
+function* watchQueryRepairs() {
+  yield takeEvery('QUERY_REPAIRS', queryRepairsAsync);
+}
+
 function* addRepairAsync(action) {
   const token = yield select(getToken);
   const response = yield call(callApi, 'post', `/users/${action.requestBody.userId}/repairs`,
@@ -74,4 +86,5 @@ export default () => ([
   watchUpdateByAdminRepair(),
   watchUpdateByUserRepair(),
   watchDeleteRepair(),
+  watchQueryRepairs(),
 ]);

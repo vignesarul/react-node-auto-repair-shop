@@ -1,4 +1,5 @@
 import { call, put, takeEvery, select } from 'redux-saga/effects';
+import _ from 'lodash';
 import callApi from 'common/helpers/http';
 
 const getToken = state => state.user.token;
@@ -45,9 +46,38 @@ function* watchGetAllUsers() {
   yield takeEvery('GET_ALL_USERS', getAllUsersAsync);
 }
 
+function* updateUserAsync(action) {
+  const token = yield select(getToken);
+  const response = yield call(callApi, 'put', `/users/${action.requestBody.userId}`, action.requestBody, { headers: {
+    authorization: token,
+  } });
+  yield put({ type: 'UPDATE_USER_RESPONSE', response });
+}
+
+function* watchUpdateUser() {
+  yield takeEvery('UPDATE_USER', updateUserAsync);
+}
+
+function* deleteUserAsync(action) {
+  const token = yield select(getToken);
+  const response = yield call(callApi, 'delete', `/users/${action.requestBody.userId}`, { headers: {
+    authorization: token,
+  } });
+  yield put({ type: 'DELETE_USER_RESPONSE',
+    response: _.merge(response, {
+      userId: action.requestBody.userId,
+    }) });
+}
+
+function* watchDeleteUser() {
+  yield takeEvery('DELETE_USER', deleteUserAsync);
+}
+
 export default () => ([
   watchCreateAccount(),
   watchLogin(),
   watchGetUser(),
   watchGetAllUsers(),
+  watchUpdateUser(),
+  watchDeleteUser(),
 ]);

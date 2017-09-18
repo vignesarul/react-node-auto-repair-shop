@@ -21,6 +21,7 @@ class RepairController {
     this.jsonSchema = model.getJsonSchema();
     this.addRepair = this.addRepair.bind(this);
     this.listRepairs = this.listRepairs.bind(this);
+    this.listAllRepairs = this.listAllRepairs.bind(this);
     this.showRepair = this.showRepair.bind(this);
     this.updateRepairByManager = this.updateRepairByManager.bind(this);
     this.updateRepairByUser = this.updateRepairByUser.bind(this);
@@ -64,6 +65,30 @@ class RepairController {
   showRepair(req, res, next) {
     this.model.getRepair(req.params.repairId)
       .then(result => res.status(200).send(serializer.serialize(result, { type: 'repairs' })))
+      .catch(error => next(error));
+  }
+
+  /**
+   * Enables admin to query on all user's repairs
+   *
+   * @param req
+   * @param res
+   * @param next
+   */
+  listAllRepairs(req, res, next) {
+    const query = stringToQuery(req.query.filter);
+    const searchable = _.keys(this.jsonSchema.querySchemaWithUserId.properties);
+    _.each(query.keys, (key) => {
+      if (key !== '$or' && key !== '$and' && searchable.indexOf(key) === -1) {
+        throw new exceptions.InvalidInput({ message: [`${key} field is not searchable`] });
+      }
+    });
+    const input = typeof (query.query) === 'string' ? JSON.parse(query.query) : query.query;
+    this.model.queryRepair(input, _.merge({ sortby: 'date,time' }, _.pick(req.query, ['order', 'sortby', 'page', 'limit'])))
+      .then((result) => {
+        const pagination = { pagination: _.merge({ limit: config.listing.limit }, req.query), type: 'repairs' };
+        res.status(200).send(serializer.serialize(result, pagination));
+      })
       .catch(error => next(error));
   }
 

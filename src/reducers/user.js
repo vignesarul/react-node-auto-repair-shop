@@ -52,6 +52,31 @@ function userReducer(state = null, action) {
         users,
       }));
     }
+    case 'UPDATE_USER':
+      return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
+    case 'UPDATE_USER_RESPONSE': {
+      if (action.response.errors.length > 0) {
+        return _.merge(_.cloneDeep(state), { isLoading: false, error: action.response.errors[0] });
+      }
+      console.log('updated user', action.response.data);
+      const updatedList = _.cloneDeep(state.users);
+      updatedList[action.response.data[0].id] = action.response.data[0];
+      return _.assign(_.cloneDeep(state), {
+        isLoading: false, error: {}, info: 'Repair Updated Successfully', users: updatedList,
+      });
+    }
+    case 'DELETE_USER':
+      return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
+    case 'DELETE_USER_RESPONSE': {
+      if ((action.response.errors || []).length > 0) {
+        return _.merge(_.cloneDeep(state), { isLoading: false, error: action.response.errors[0] });
+      }
+      console.log('delete user', action.response.data);
+      return _.assign(_.cloneDeep(state), {
+        isLoading: false, error: {}, info: '', users: _.omit(state.users, action.response.userId),
+      });
+    }
+
     default:
       return state;
   }

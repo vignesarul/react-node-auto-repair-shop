@@ -19,6 +19,12 @@ function mapDispatchToProps(dispatch) {
         const requestBody = {};
         dispatch({ type: 'GET_ALL_USERS', requestBody });
       },
+      deleteUser: (e) => {
+        const requestBody = {
+          userId: e.target.getAttribute('data-userId'),
+        };
+        dispatch({ type: 'DELETE_USER', requestBody });
+      },
     },
   };
 }

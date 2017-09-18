@@ -13,12 +13,18 @@ class ListUser extends React.Component {
   }
 
   render() {
-    const { userStore } = this.props;
+    const { userStore, actionMethods } = this.props;
     return (<div className="py-5">
       <div className="container">
         <div className="row">
           <Sidebar />
           <div className="col-md-9">
+            <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+              <button type="button" className={userStore.isLoading ? 'btn btn-warning btn-sm' : 'btn btn-secondary btn-sm'} disabled={userStore.isLoading} onClick={actionMethods.retriveUsers}>
+                {userStore.isLoading ? <i className="fa fa-spinner" /> : ''}
+                Refresh Data
+              </button>
+            </div>
             <div className="card">
               <div className="card-header">Users</div>
               {(userStore.info || userStore.error) ? <AlertMessage message={userStore} /> : ''}
@@ -26,7 +32,6 @@ class ListUser extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>#</th>
                       <th>First Name</th>
                       <th>Email</th>
                       <th>Action</th>
@@ -34,14 +39,13 @@ class ListUser extends React.Component {
                   </thead>
                   <tbody>
                     {_.keys(userStore.users || []).map(userId => (<tr key={userId}>
-                      <td>{userId}</td>
                       <td>{userStore.users[userId].attributes.firstName}</td>
                       <td>{userStore.users[userId].attributes.email}</td>
                       <td>
-                        <Link to={`/users/edit/${userId}`}><i className="fa fa-edit" /></Link>&nbsp;
-                        <Link to={`/users/edit/${userId}`}><i className="fa fa-trash" /></Link>&nbsp;
+                        <Link to={`/users/${userId}/edit`}><i className="fa fa-edit" /></Link>&nbsp;
+                        <i role="button" tabIndex={-1} className="fa fa-trash" data-userId={userId} onClick={actionMethods.deleteUser} /> &nbsp;
                         <Link to={`/users/${userId}/repairs/create`}><i className="fa fa-plus-square" /></Link>&nbsp;
-                        <Link to={`/users/${userId}/repairs`}><i className="fa fa-list" /></Link>
+                        <Link to={`/users/${userStore.user.id}/repairs?userId=${userId}`}><i className="fa fa-list" /></Link>
                       </td>
                     </tr>))}
                   </tbody>
@@ -64,6 +68,7 @@ ListUser.propTypes = {
   }).isRequired,
   actionMethods: PropTypes.shape({
     retriveUsers: PropTypes.func.isRequired,
+    deleteUser: PropTypes.func.isRequired,
   }).isRequired,
 };
 
