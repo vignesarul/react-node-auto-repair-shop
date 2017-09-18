@@ -8,10 +8,10 @@ const SideBar = props => (<div className="col-md-3">
       <Link to={`/users/${props.userId}/repairs/create`} className="nav-link"><i className="fa fa-home" /> Add Repair</Link>
     </li>
     <li className="nav-item">
-      <Link to={`/users/${props.userId}/repairs`} className="nav-link"><i className="fa fa-home" /> List all repairs</Link>
+      <Link to={`/users/${props.userId}/repairs`} className="nav-link"><i className="fa fa-home" /> All repairs</Link>
     </li>
     <li className="nav-item">
-      <Link to={`/users/${props.userId}/repairs?userId=${props.userId}`} className="nav-link"><i className="fa fa-home" /> View my repairs</Link>
+      <Link to={`/users/${props.userId}/repairs?userId=${props.userId}`} className="nav-link"><i className="fa fa-home" /> My repairs</Link>
     </li>
     <li className="nav-item">
       <Link to="/users" className="nav-link"><i className="fa fa-home" /> List Users</Link>
