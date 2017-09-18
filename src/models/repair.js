@@ -48,6 +48,19 @@ class Repair {
   }
 
   /**
+   * Adds an comment to repair using repairId
+   *
+   * @param repairId
+   * @param input
+   * @returns {*|Promise}
+   */
+  addComment(repairId, input) {
+    const createdAt = { createdAt: new Date().toISOString() };
+    console.log(_.merge(createdAt, input));
+    return this.model.findByIdAndUpdate(repairId, { $push: { comments: _.merge(createdAt, input) } }, { new: true });
+  }
+
+  /**
    * Deletes a repair using repairId
    *
    * @param repairId

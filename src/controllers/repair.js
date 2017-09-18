@@ -29,6 +29,7 @@ class RepairController {
     this.removeRepairsByUserId = this.removeRepairsByUserId.bind(this);
     this.verifyRepairOwner = this.verifyRepairOwner.bind(this);
     this.checkRepairTimeSlot = this.checkRepairTimeSlot.bind(this);
+    this.addComment = this.addComment.bind(this);
   }
 
   /**
@@ -130,6 +131,23 @@ class RepairController {
       .then(input => validator.validate({ input, schema: this.jsonSchema.updateByUserSchema }))
       .then(input => this.checkRepairTimeSlot(_.merge(input, { id: req.params.repairId })))
       .then(input => this.model.updateRepair(req.params.repairId, _.omit(input, 'id')))
+      .then(result => res.status(200).send(serializer.serialize(result.toObject(), { type: 'repairs' })))
+      .catch(error => next(error));
+  }
+
+  /**
+   * Handles update comment request
+   *
+   * @param req
+   * @param res
+   * @param next
+   */
+  addComment(req, res, next) {
+    const data = _.cloneDeep(req.body);
+    if (data.comments && data.comments[0]) data.comments[0].createdBy = req.user.id;
+    validator.buildParams({ input: data, schema: this.jsonSchema.addCommentSchema })
+      .then(input => validator.validate({ input, schema: this.jsonSchema.addCommentSchema }))
+      .then(input => this.model.addComment(req.params.repairId, input.comments[0]))
       .then(result => res.status(200).send(serializer.serialize(result.toObject(), { type: 'repairs' })))
       .catch(error => next(error));
   }

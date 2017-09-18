@@ -9,6 +9,19 @@ const repair = {
   approved: { type: 'boolean', 'm-default': false },
   date: { type: 'string', pattern: '^(19|20)\\d\\d[-](0[1-9]|1[012])[-](0[1-9]|[12][0-9]|3[01])$' },
   time: { type: 'string', pattern: '^(?:2[0-3]|[01]?[0-9]):[0-5][0-9]:[0-5][0-9]$' },
+  comments: { type: 'array',
+    maxItems: 1,
+    minItems: 1,
+    items: {
+      type: 'object',
+      properties: {
+        type: {
+          createdBy: { type: 'string' },
+          text: { type: 'string' },
+        },
+      },
+      required: ['createdBy', 'text'],
+    } },
   createdBy: { type: 'string' },
   createdAt: { type: 'string', format: 'date-time' },
   updatedAt: { type: 'string', format: 'date-time' },
@@ -22,7 +35,7 @@ const postSchema = {
 
 const updateByUserSchema = {
   type: 'object',
-  properties: _.pick(repair, ['completed', 'date', 'time']),
+  properties: _.pick(repair, ['completed', 'date', 'time', 'comments']),
   anyOf: ['completed'].map(key => ({ required: [`${key}`] })),
   additionalProperties: false,
 };
@@ -46,10 +59,18 @@ const querySchemaWithUserId = {
   properties: _.omit(repair),
 };
 
+const addCommentSchema = {
+  type: 'object',
+  properties: _.pick(repair, ['comments']),
+  required: ['comments'],
+  additionalProperties: false,
+};
+
 module.exports = {
   postSchema,
   updateByUserSchema,
   updateByManagerSchema,
+  addCommentSchema,
   tableName,
   querySchema,
   querySchemaWithUserId,

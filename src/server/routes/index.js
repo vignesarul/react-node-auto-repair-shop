@@ -21,6 +21,7 @@ const routes = (express, app, { user, access, role, repair }) => {
   route.post('/users/:userId/repairs', access.verifyAuth(), user.populateParamsUserId, user.populateTokenUser(), role.validateRole('repairs', 'write'), repair.addRepair);
   route.put('/users/:userId/repairs/:repairId/manage', access.verifyAuth(), user.populateParamsUserId, user.populateTokenUser(), role.validateRole('repairs', 'approve'), repair.verifyRepairOwner, repair.updateRepairByManager);
   route.put('/users/:userId/repairs/:repairId', access.verifyAuth(), user.populateParamsUserId, user.populateTokenUser(), role.validateRole('repairs', 'update'), repair.verifyRepairOwner, repair.updateRepairByUser);
+  route.post('/users/:userId/repairs/:repairId/comment', access.verifyAuth(), user.populateParamsUserId, user.populateTokenUser(), role.validateRole('repairs', 'update'), repair.verifyRepairOwner, repair.addComment);
   route.get('/users/:userId/repairs/:repairId', access.verifyAuth(), user.populateParamsUserId, user.populateTokenUser(), role.validateRole('repairs', 'read'), repair.verifyRepairOwner, repair.showRepair);
   route.delete('/users/:userId/repairs/:repairId', access.verifyAuth(), user.populateParamsUserId, user.populateTokenUser(), role.validateRole('repairs', 'delete'), repair.verifyRepairOwner, repair.removeRepair);
 

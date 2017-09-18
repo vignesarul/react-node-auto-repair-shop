@@ -18,7 +18,13 @@ module.exports = (jsonSchema) => {
     schema[key] = {
       type: capitalize((properties[key].type)),
     };
-    if (schema[key].type === 'Array') schema[key] = [{ type: 'String' }];
+    if (schema[key].type === 'Array') {
+      if ((properties[key].items || {}).type === 'object') {
+        schema[key] = ['Mixed'];
+      } else {
+        schema[key] = [{ type: 'String' }];
+      }
+    }
     if ((jsonSchema.required || []).indexOf(key) > -1) schema[key].required = true;
     if ((properties[key]['m-unique'])) {
       schema[key].unique = true;
