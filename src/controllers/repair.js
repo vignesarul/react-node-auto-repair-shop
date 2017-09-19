@@ -85,6 +85,7 @@ class RepairController {
       }
     });
     const input = typeof (query.query) === 'string' ? JSON.parse(query.query) : query.query;
+    console.log(JSON.stringify(input));
     this.model.queryRepair(input, _.merge({ sortby: 'date,time' }, _.pick(req.query, ['order', 'sortby', 'page', 'limit'])))
       .then((result) => {
         const pagination = { pagination: _.merge({ limit: config.listing.limit }, req.query), type: 'repairs' };

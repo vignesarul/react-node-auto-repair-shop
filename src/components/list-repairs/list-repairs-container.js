@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import ListRepairs from 'components/list-repairs/list-repairs-display';
+import { addDays } from 'common/helpers/dateConverter';
 import _ from 'lodash';
 
 // Map Redux state to component props
@@ -15,6 +16,29 @@ function mapStateToProps(store) {
 function mapDispatchToProps(dispatch) {
   return {
     actionMethods: {
+      performSearch: (e) => {
+        e.preventDefault();
+        const formData = _.pickBy({
+          title: e.target.title.value,
+          userId: e.target.userId.value,
+          approved: e.target.status.value === 'approved' ? true : undefined,
+          completed: e.target.status.value === 'completed' ? true : undefined,
+          dateFrom: e.target.from.value ? addDays({ date: e.target.from.value, count: 0, format: 'YYYY-MM-DD' }) : undefined,
+          dateTo: e.target.to.value ? addDays({ date: e.target.to.value, count: 0, format: 'YYYY-MM-DD' }) : undefined,
+        });
+        if (formData.completed) formData.approved = false;
+
+        _.map(_.keys(formData), (field) => {
+          const ltOperator = (field.search(/to/i) > -1 ? 'lte' : 'eq');
+          const operator = (field.search(/from/i) > -1) ? 'gte' : ltOperator;
+          let actualField = field;
+          if (field.search(/date/i) > -1) actualField = 'date';
+          formData[field] = `(${actualField} ${operator} ${formData[field]})`;
+        });
+
+        const filter = _.values(formData).join(' AND ');
+        dispatch({ type: 'QUERY_REPAIRS', requestBody: { filter: _.keys(formData).length > 1 ? `(${filter})` : filter } });
+      },
       refreshAllRepair: () => {
         const requestBody = {};
         dispatch({ type: 'QUERY_REPAIRS', requestBody });

@@ -10,7 +10,7 @@ const exceptions = require('common/exceptions');
 const processQuery = (input) => {
   try {
     let queryString = trimSpaces(input);
-    let regEx = /([a-z_]+)( eq | ne | gt | lt )([a-z0-9_@$\-'",\.\\\[\]\{\}\: ]+)/gi;
+    let regEx = /([a-z_]+)( eq | ne | gt | lt | gte | lte )([a-z0-9_@$\-'",\.\\\[\]\{\}\: ]+)/gi;
     const regEx1 = new RegExp(regEx);
     const keys = [];
     let match = regEx1.exec(queryString);

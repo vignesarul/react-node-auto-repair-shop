@@ -78,6 +78,9 @@ class ListRepairs extends React.Component {
           <Sidebar />
           <div className="col-md-9">
             <div style={{ textAlign: 'right', marginBottom: '10px' }}>
+              <button className="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Advanced Search
+              </button>&nbsp;
               <button
                 type="button"
                 className={repairStore.isLoading ? 'btn btn-warning btn-sm' : 'btn btn-secondary btn-sm'}
@@ -88,6 +91,59 @@ class ListRepairs extends React.Component {
                 {repairStore.isLoading ? <i className="fa fa-spinner" /> : ''}
                 Refresh Data
               </button>
+              <div className="collapse" id="collapseExample">
+                <div className="card card-block">
+                  <form onSubmit={actionMethods.performSearch}>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group row">
+                          <label htmlFor="example-text-input" className="col-2 col-form-label">UserId</label>
+                          <div className="col-10">
+                            <select className="form-control" name="userId">
+                              {_.keys(userStore.users).map(userId => <option key={userId} value={userId}>{`${userStore.users[userId].attributes.firstName} - ${userId}`}</option>)}
+                            </select>
+                          </div>
+                        </div>
+                        <div className="form-group row">
+                          <label htmlFor="example-search-input" className="col-2 col-form-label">Title</label>
+                          <div className="col-10">
+                            <input className="form-control" type="text" name="title" />
+                          </div>
+                        </div>
+                        <div className="form-group row">
+                          <label htmlFor="example-search-input" className="col-2 col-form-label">Status</label>
+                          <div className="col-10">
+                            <select className="form-control" name="status">
+                              <option value="default">Not started</option>
+                              <option value="completed">Completed</option>
+                              <option value="approved">Approved</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group row">
+                          <label htmlFor="example-text-input" className="col-2 col-form-label">From</label>
+                          <div className="col-10">
+                            <input className="form-control" name="from" type="date" id="example-text-input" />
+                          </div>
+                        </div>
+                        <div className="form-group row">
+                          <label htmlFor="example-search-input" className="col-2 col-form-label">To</label>
+                          <div className="col-10">
+                            <input className="form-control" name="to" type="date" id="example-search-input" />
+                          </div>
+                        </div>
+                        <div className="form-group row">
+                          <div className="col-10">
+                            <button type="submit" className="btn btn-primary">Search</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
             <div className="card">
               <div className="card-header">Repairs</div>
