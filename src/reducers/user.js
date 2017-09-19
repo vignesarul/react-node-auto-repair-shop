@@ -1,4 +1,7 @@
 import _ from 'lodash';
+import config from 'common/config/react';
+
+console.log('config', config);
 // Reducer
 
 function userReducer(state = null, action) {
@@ -14,6 +17,8 @@ function userReducer(state = null, action) {
         info: 'Enter the verification code sent to your email',
         userId: action.response.data[0].id,
       }));
+    case 'LOGOUT':
+      return _.cloneDeep(config.initialStore.user);
     case 'LOGIN':
       return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
     case 'LOGIN_RESPONSE':
@@ -24,6 +29,9 @@ function userReducer(state = null, action) {
         isLoading: false,
         user: action.response.includes[0].data[0],
         token: action.response.data[0].attributes.access_token,
+        users: {
+          [action.response.includes[0].data[0].id]: action.response.includes[0].data[0],
+        },
       }));
     case 'GET_USER':
       return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });

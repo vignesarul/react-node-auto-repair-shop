@@ -3,21 +3,22 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 const SideBar = props => (<div className="col-md-3">
-  <ul className="nav nav-pills flex-column">
+
+  {props.userStore.user.attributes.roles !== 'user' ? (<ul className="nav nav-pills flex-column">
     <li className="nav-item">
-      <Link to={`/users/${props.userId}/repairs/create`} className="nav-link"><i className="fa fa-home" /> Add Repair</Link>
-    </li>
-    <li className="nav-item">
-      <Link to={`/users/${props.userId}/repairs`} className="nav-link"><i className="fa fa-home" /> All repairs</Link>
-    </li>
-    <li className="nav-item">
-      <Link to={`/users/${props.userId}/repairs?userId=${props.userId}`} className="nav-link"><i className="fa fa-home" /> My repairs</Link>
+      <Link to={`/users/${props.userStore.user.id}/repairs/create`} className="nav-link"><i className="fa fa-home" /> Add Repair</Link>
+    </li><li className="nav-item">
+      <Link to={`/users/${props.userStore.user.id}/repairs`} className="nav-link"><i className="fa fa-home" /> All repairs</Link>
     </li>
     <li className="nav-item">
       <Link to="/users" className="nav-link"><i className="fa fa-home" /> List Users</Link>
+    </li></ul>) : ''}
+  <ul className="nav nav-pills flex-column">
+    <li className="nav-item">
+      <Link to={`/users/${props.userStore.user.id}/repairs?userId=${props.userStore.user.id}`} className="nav-link"><i className="fa fa-home" /> My repairs</Link>
     </li>
     <li className="nav-item">
-      <Link to={`/users/${props.userId}/edit`} className="nav-link"><i className="fa fa-home" /> Edit my profile</Link>
+      <Link to={`/users/${props.userStore.user.id}/edit`} className="nav-link"><i className="fa fa-home" /> Edit my profile</Link>
     </li>
   </ul>
   <hr className="" />
@@ -30,11 +31,14 @@ const SideBar = props => (<div className="col-md-3">
 </div>);
 
 SideBar.propTypes = {
-  userId: PropTypes.string,
-};
-
-SideBar.defaultProps = {
-  userId: '',
+  userStore: PropTypes.shape({
+    user: PropTypes.shape({
+      id: PropTypes.string,
+      attributes: PropTypes.shape({
+        roles: PropTypes.string,
+      }),
+    }),
+  }).isRequired,
 };
 
 export default SideBar;

@@ -9,7 +9,8 @@ import rootReducer from 'reducers';
 import Routes from 'routes';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from 'redux-sagas';
-import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker from 'registerServiceWorker';
+import config from 'common/config/react';
 
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__;
@@ -18,20 +19,7 @@ registerServiceWorker();
 const sagaMiddleware = createSagaMiddleware();
 
 // Intial storedata
-const initialStore = {
-  user: {
-    error: {},
-    info: '',
-    isLoading: false,
-    users: {},
-  },
-  repair: {
-    error: {},
-    info: '',
-    isLoading: false,
-    repairsList: [],
-  },
-};
+const initialStore = config.initialStore;
 
 const persistConfig = {
   key: 'root', // key is required

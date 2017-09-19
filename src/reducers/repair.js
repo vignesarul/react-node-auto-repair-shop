@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import config from 'common/config/react';
 // Reducer
 
 function repairReducer(state = null, action) {
@@ -72,6 +73,8 @@ function repairReducer(state = null, action) {
         isLoading: false, error: {}, info: '', repairsList: updatedList,
       });
     }
+    case 'LOGOUT':
+      return _.cloneDeep(config.initialStore.repair);
     default:
       return state;
   }

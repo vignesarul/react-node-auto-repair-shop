@@ -1,12 +1,17 @@
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import SideBar from 'components/sidebar/sidebar-display';
 
 // Action
 // const increaseAction = { type: 'increase' }
 
 // Map Redux state to component props
-function mapStateToProps(state) {
-  return { userId: (state.user.user || {}).id };
+function mapStateToProps(store) {
+  const { repair, user } = _.cloneDeep(store);
+  return {
+    repairStore: repair,
+    userStore: user,
+  };
 }
 
 // Map Redux actions to component props

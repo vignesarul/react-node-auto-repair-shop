@@ -6,7 +6,7 @@ import AlertMessage from 'components/alert-box/alert-box-display';
 class Login extends React.Component {
   componentWillReceiveProps(props) {
     if ((props.user || {}).id) {
-      this.props.history.push(`/users/${props.user.id}/repairs`);
+      this.props.history.push(`/users/${props.user.id}/repairs?userId=${props.user.id}`);
     }
   }
 
