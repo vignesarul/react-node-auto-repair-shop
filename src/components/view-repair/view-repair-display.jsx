@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 import Sidebar from 'components/sidebar/sidebar-container';
 import AlertMessage from 'components/alert-box/alert-box-display';
 
@@ -17,15 +18,8 @@ class ViewRepair extends React.Component {
     actionMethods.getUsers();
   }
 
-  componentDidUpdate() {
-    const { repairStore, userStore } = this.props;
-    if (repairStore.info) {
-      this.props.history.push(`/users/${userStore.user.id}/repairs`);
-    }
-  }
-
   render() {
-    const { repairStore, userStore, match } = this.props;
+    const { repairStore, userStore, match, actionMethods } = this.props;
     const repair = _.find(repairStore.repairsList, { id: match.params.repairId });
     return (<div className="py-5">
       <div className="container">
@@ -63,6 +57,42 @@ class ViewRepair extends React.Component {
                 </table>
               </div>
             </div>
+            <div className="card mx-auto w-100 comments">
+              <div className="card-block">
+                <div className="panel panel-white post">
+                  <div className="post-footer">
+
+                    <form onSubmit={actionMethods.createComment}>
+                      <div className="input-group">
+                        <input className="form-control" name="text" placeholder="Add a comment" type="text" />
+                        <span className="input-group-addon">
+                          <button type="submit" disabled={repairStore.isLoading} className="btn btn-primary btn-sm">Comment</button>
+                        </span>
+                      </div>
+                      <input type="hidden" name="userId" defaultValue={repair.attributes.userId} />
+                      <input type="hidden" name="repairId" defaultValue={repair.id} />
+                    </form>
+
+                    <ul className="comments-list">
+                      {repair.attributes.comments.map(comment => (<li className="comment" key={comment.createdAt}>
+                        <a className="pull-left" href="">
+                          <img className="avatar" src={`http://i.pravatar.cc/35?u=${comment.createdBy}`} alt="avatar" />
+                        </a>
+                        <div className="comment-body">
+                          <div className="comment-heading">
+                            <h4 className="user">{userStore.users[comment.createdBy] ? userStore.users[comment.createdBy].attributes.firstName : userStore.users[comment.createdBy]}</h4>
+                            <h5 className="time">{moment(comment.createdAt).fromNow()}</h5>
+                          </div>
+                          <p>{comment.text}</p>
+                        </div>
+                      </li>),
+                      )}
+                    </ul>
+                  </div>
+
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -82,9 +112,6 @@ ViewRepair.propTypes = {
       code: PropTypes.string,
     }),
     isLoading: PropTypes.bool.isRequired,
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
   }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({

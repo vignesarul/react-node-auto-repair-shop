@@ -32,7 +32,9 @@ function repairReducer(state = null, action) {
         repairsList: action.response.data.concat(state.repairsList),
       });
     case 'UPDATE_REPAIR_BY_ADMIN':
+    case 'ADD_COMMENT':
       return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
+    case 'ADD_COMMENT_RESPONSE':
     case 'UPDATE_REPAIR_BY_ADMIN_RESPONSE': {
       if (action.response.errors.length > 0) {
         return _.merge(_.cloneDeep(state), { isLoading: false, error: action.response.errors[0] });

@@ -21,6 +21,15 @@ function mapDispatchToProps(dispatch) {
       getUsers: () => {
         dispatch({ type: 'GET_ALL_USERS' });
       },
+      createComment: (e) => {
+        e.preventDefault();
+        const requestBody = {
+          userId: e.target.userId.value,
+          repairId: e.target.repairId.value,
+          comments: [{ text: e.target.text.value }],
+        };
+        dispatch({ type: 'ADD_COMMENT', requestBody });
+      },
     },
   };
 }

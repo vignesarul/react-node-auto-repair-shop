@@ -65,6 +65,18 @@ function* watchUpdateByUserRepair() {
   yield takeEvery('UPDATE_REPAIR_BY_USER', updateRepairByUserAsync);
 }
 
+function* createCommentAsync(action) {
+  const token = yield select(getToken);
+  const response = yield call(callApi, 'post', `/users/${action.requestBody.userId}/repairs/${action.requestBody.repairId}/comment`, action.requestBody, { headers: {
+    authorization: token,
+  } });
+  yield put({ type: 'ADD_COMMENT_RESPONSE', response });
+}
+
+function* watchCreateComment() {
+  yield takeEvery('ADD_COMMENT', createCommentAsync);
+}
+
 function* deleteRepairAsync(action) {
   const token = yield select(getToken);
   const response = yield call(callApi, 'delete', `/users/${action.requestBody.userId}/repairs/${action.requestBody.repairId}`, { headers: {
@@ -87,4 +99,5 @@ export default () => ([
   watchUpdateByUserRepair(),
   watchDeleteRepair(),
   watchQueryRepairs(),
+  watchCreateComment(),
 ]);
