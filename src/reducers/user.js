@@ -17,6 +17,17 @@ function userReducer(state = null, action) {
         info: 'Enter the verification code sent to your email',
         userId: action.response.data[0].id,
       }));
+    case 'VERIFY_ACCOUNT':
+      return _.assign(_.cloneDeep(state), { isLoading: true, error: '', info: '' });
+    case 'VERIFY_ACCOUNT_RESPONSE':
+      if (action.response.errors.length > 0) {
+        return _.merge(_.cloneDeep(state), { isLoading: false, error: action.response.errors[0] });
+      }
+      return (_.assign(_.cloneDeep(state), {
+        isLoading: false,
+        info: 'Account verified. Login to dashboard',
+        userId: '',
+      }));
     case 'LOGOUT':
       return _.cloneDeep(config.initialStore.user);
     case 'LOGIN':
@@ -33,6 +44,8 @@ function userReducer(state = null, action) {
           [action.response.includes[0].data[0].id]: action.response.includes[0].data[0],
         },
       }));
+    case 'CLEAR_INFO':
+      return _.assign(_.cloneDeep(state), { info: '' });
     case 'GET_USER':
       return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
     case 'GET_USER_RESPONSE':

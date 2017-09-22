@@ -58,7 +58,7 @@ class User {
     const updatedAt = { updatedAt: new Date().toISOString() };
     const data = _.cloneDeep(input);
     if (data.password) data.password = this.encryptPasswordString(data.password);
-    return this.model.findByIdAndUpdate(userId, { $set: _.merge(updatedAt, data) }, { new: true }).catch((err) => {
+    return this.model.findByIdAndUpdate(userId, { $set: _.merge(updatedAt, data) }, _.merge({ new: true }, config.database.validation)).catch((err) => {
       const constructErrors = field => ({ message: `"${field}" should be unique` });
       throw new exceptions.DuplicateRecord(Object.keys(err.errors).map(constructErrors));
     });
