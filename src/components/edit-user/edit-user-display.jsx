@@ -12,10 +12,14 @@ class EditUser extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    const { userStore } = this.props;
+  componentWillReceiveProps(props) {
+    const { userStore } = props;
     if (userStore.info) {
-      this.props.history.push('/users');
+      if (userStore.user.attributes.roles !== 'user') {
+        this.props.history.push('/users');
+      } else {
+        this.props.history.push(`/users/${userStore.user.id}/repairs?userId=${userStore.user.id}`);
+      }
     }
   }
 
