@@ -10,6 +10,7 @@ module.exports = {
     uri: 'mongodb://localhost:27017/autorepair',
     // uri: 'mongodb://devuser:sadfasdfgdf@ds123933.mlab.com:23933/calories',
     table: '',
+    validation: { runValidators: true, context: 'query' },
   },
   logger: {
     level: '',
