@@ -33,9 +33,9 @@ class Login extends React.Component {
                   <button type="submit" disabled={this.props.isLoading} className="btn btn-primary">Login</button>
                 </form>
                 <br />
+                <Link to="/auth/create-account" className="btn btn-link btn-sm">Create Account</Link>
                 <Link to="/auth/forgot-password" className="btn btn-link btn-sm">Forgot Password</Link>
                 <Link to="/auth/reset-password" className="btn btn-link btn-sm">Reset Password</Link>
-                <Link to="/auth/verify-account" className="btn btn-link btn-sm">Activate Account</Link>
               </div>
             </div>
           </div>

@@ -17,6 +17,7 @@ const Routes = () => (<div>
   <Switch>
     <Route path="/auth/create-account" component={CreateUser} />
     <Route path="/auth/verify-account" component={VerifyAccount} />
+    <Route path="/" component={Login} />
     <Route path="/auth/login" component={Login} />
     <Route exact path="/users" component={ListUsers} />
     <Route exact path="/users/add" component={AddUser} />
