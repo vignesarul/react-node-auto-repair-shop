@@ -77,7 +77,7 @@ class Role {
       name,
       permissions,
     };
-    if (level) query.level = { $lt: level };
+    if (level) query.level = { $lte: level };
     return this.model.findOne(query);
   }
 
