@@ -5,34 +5,53 @@ import _ from 'lodash';
 import queryString from 'query-string';
 import Sidebar from 'components/sidebar/sidebar-container';
 import AlertMessage from 'components/alert-box/alert-box-display';
-import { addTime } from 'common/helpers/dateConverter';
+import { addDays } from 'common/helpers/dateConverter';
 
 const ActionButtons = (props) => {
   if (props.approved) {
-    return <i className="fa fa-check-circle-o" style={{ color: 'green' }} title="Completed & Approved" />;
+    return <div />;
   } else if (props.completed && props.role !== 'user') {
     return (<div>
-      <button type="button" className="btn btn-secondary btn-sm" data-userId={props.userId} data-id={props.id} onClick={props.markIncomplete}>Mark Incomplete</button>
-      <button type="button" className="btn btn-secondary btn-sm" data-userId={props.userId} data-id={props.id} onClick={props.markApproved}>Mark Approved</button>
+      <button type="button" className="dropdown-item" data-userId={props.userId} data-id={props.id} onClick={props.markApproved}>Approve</button>
+      <button type="button" className="dropdown-item" data-userId={props.userId} data-id={props.id} onClick={props.markIncomplete}>Mark Incomplete</button>
     </div>);
   } else if ((props.completed && props.role === 'user')) {
-    return <i className="fa fa-hourglass-half" style={{ color: '#fb9d18' }} title="Completed" />;
+    return <div />;
   }
-  return <button type="button" className="btn btn-secondary btn-sm" data-userId={props.userId} data-id={props.id} data-role={props.role} onClick={props.markCompleted}>Mark Completed</button>;
+  return <button type="button" className="dropdown-item" data-userId={props.userId} data-id={props.id} data-role={props.role} onClick={props.markCompleted}>Mark Completed</button>;
 };
 
 ActionButtons.propTypes = {
   id: PropTypes.string.isRequired,
   role: PropTypes.string.isRequired,
   userId: PropTypes.string.isRequired,
-  approved: PropTypes.bool.isRequired,
   completed: PropTypes.bool.isRequired,
+  approved: PropTypes.bool.isRequired,
   markApproved: PropTypes.func.isRequired,
   markCompleted: PropTypes.func.isRequired,
   markIncomplete: PropTypes.func.isRequired,
 };
 
 class ListRepairs extends React.Component {
+  static getRepairStatus(repair) {
+    let status = 'New';
+    if (repair.approved) {
+      status = 'Approved';
+    } else if (repair.completed) {
+      status = 'Completed';
+    }
+    return status;
+  }
+  static getRepairColor(repair) {
+    let status = 'info';
+    if (repair.approved) {
+      status = 'success';
+    } else if (repair.completed) {
+      status = 'warning';
+    }
+    return status;
+  }
+
   constructor() {
     super();
     this.refreshInitialData = this.refreshInitialData.bind(this);
@@ -158,10 +177,10 @@ class ListRepairs extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Title</th>
+                      <th className="w-25">Title</th>
                       <th>User</th>
-                      <th className="w-25">Time</th>
-                      <th className="w-25">Action</th>
+                      <th>Time</th>
+                      <th className="actionButtons">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -169,14 +188,26 @@ class ListRepairs extends React.Component {
                       <td><Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}>{repair.attributes.title}</Link></td>
                       <td><Link to={`/users/${repair.attributes.userId}/edit`}>{this.getUserName(repair.attributes.userId)}</Link></td>
                       <td>
-                        {repair.attributes.date} {repair.attributes.time} to <br />
-                        {addTime(_.pick(repair.attributes, ['date', 'time'])).date} {addTime(_.pick(repair.attributes, ['date', 'time'])).time}</td>
+                        {addDays({
+                          date: `${repair.attributes.date} ${repair.attributes.time}`,
+                          format: 'Do MMM h:mm a',
+                          count: 0,
+                        })}</td>
                       <td>
-                        {userStore.user.attributes.roles !== 'user' ? <span>
-                          <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}/edit`}><i className="fa fa-edit" /></Link> &nbsp;
-                          <i role="button" tabIndex={-1} className="fa fa-trash" data-userId={repair.attributes.userId} data-id={repair.id} onClick={actionMethods.deleteRepair} /> &nbsp;
-                        </span> : '' }
-                        <ActionButtons {...repair.attributes} id={repair.id} role={userStore.user.attributes.roles} markApproved={actionMethods.markApproved} markCompleted={actionMethods.markCompleted} markIncomplete={actionMethods.markIncomplete} />
+                        <div className="btn-group">
+                          <button type="button" className={`btn btn-sm btn-${ListRepairs.getRepairColor(repair.attributes)}`}>{ListRepairs.getRepairStatus(repair.attributes)}</button>
+                          <button type="button" className={`btn btn-sm btn-${ListRepairs.getRepairColor(repair.attributes)} dropdown-toggle dropdown-toggle-split`} data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span className="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <div className="dropdown-menu">
+                            {userStore.user.attributes.roles !== 'user' ?
+                              <span>
+                                <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}/edit`} className="dropdown-item">Edit</Link>
+                                <a className="dropdown-item" role="button" tabIndex={-1} data-userId={repair.attributes.userId} data-id={repair.id} onClick={actionMethods.deleteRepair}>Delete</a>
+                              </span> : '' }
+                            <ActionButtons {...repair.attributes} id={repair.id} role={userStore.user.attributes.roles} markApproved={actionMethods.markApproved} markCompleted={actionMethods.markCompleted} markIncomplete={actionMethods.markIncomplete} />
+                          </div>
+                        </div>
                       </td>
                     </tr>))}
                   </tbody>

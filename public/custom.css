@@ -1,5 +1,11 @@
-.btn-sm {
-  margin: 5px 0 0 5px !important;
+.red {
+  color: #be0000;
+}
+.actionButtons{
+  width:135px !important;
+}
+.btn {
+  cursor: pointer !important;
 }
 .comments {
   margin-top: 20px;

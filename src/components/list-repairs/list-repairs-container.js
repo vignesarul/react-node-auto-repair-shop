@@ -112,6 +112,7 @@ function mapDispatchToProps(dispatch) {
         dispatch({ type: 'UPDATE_REPAIR_BY_ADMIN', requestBody });
       },
       deleteRepair: (e) => {
+        e.preventDefault();
         const requestBody = {
           userId: e.target.getAttribute('data-userId'),
           repairId: e.target.getAttribute('data-id'),
