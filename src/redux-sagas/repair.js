@@ -6,9 +6,10 @@ const getToken = state => state.user.token;
 
 function* getRepairsAsync(action) {
   const token = yield select(getToken);
-  const response = yield call(callApi, 'get', `/users/${action.requestBody.userId}/repairs`, { headers: {
-    authorization: token,
-  } });
+  let query = `?filter=${action.requestBody.filter || ''}`;
+  if (!_.isEmpty(action.requestBody.next)) query = action.requestBody.next;
+  const response = yield call(callApi, 'get', `/users/${action.requestBody.userId}/repairs${query}`,
+    { headers: { authorization: token } });
   yield put({ type: 'GET_REPAIRS_RESPONSE', response });
 }
 
@@ -18,7 +19,9 @@ function* watchGetRepairs() {
 
 function* queryRepairsAsync(action) {
   const token = yield select(getToken);
-  const response = yield call(callApi, 'get', `/repairs?filter=${action.requestBody.filter || ''}`, { headers: {
+  let query = `?filter=${action.requestBody.filter || ''}`;
+  if (!_.isEmpty(action.requestBody.next)) query = action.requestBody.next;
+  const response = yield call(callApi, 'get', `/repairs${query}`, { headers: {
     authorization: token,
   } });
   yield put({ type: 'QUERY_REPAIRS_RESPONSE', response });

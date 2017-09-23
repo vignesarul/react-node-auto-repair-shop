@@ -8,15 +8,21 @@ function repairReducer(state = null, action) {
     case 'QUERY_REPAIRS':
       return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
     case 'GET_REPAIRS_RESPONSE':
-    case 'QUERY_REPAIRS_RESPONSE':
+    case 'QUERY_REPAIRS_RESPONSE': {
       if (action.response.errors.length > 0) {
         return _.merge(_.cloneDeep(state), { isLoading: false, error: action.response.errors[0], repairsList: [] });
+      }
+      let repairsList = _.isEmpty(action.response.data) ? null : action.response.data;
+      if ((action.response.links || {}).prev) {
+        repairsList = _.uniqBy((state.repairsList || []).concat(action.response.data), 'id');
       }
       return (_.assign(_.cloneDeep(state), {
         isLoading: false,
         error: {},
-        repairsList: _.isEmpty(action.response.data) ? null : action.response.data,
+        repairsList,
+        next: (action.response.links || {}).next || '',
       }));
+    }
     case 'CLEAR_INFO':
       return _.assign(_.cloneDeep(state), { info: '' });
     case 'ADD_REPAIR':

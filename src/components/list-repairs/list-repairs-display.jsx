@@ -36,6 +36,7 @@ class ListRepairs extends React.Component {
   constructor() {
     super();
     this.refreshInitialData = this.refreshInitialData.bind(this);
+    this.loadMore = this.loadMore.bind(this);
   }
   componentWillMount() {
     this.refreshInitialData();
@@ -70,6 +71,11 @@ class ListRepairs extends React.Component {
     }
   }
 
+  loadMore() {
+    const { actionMethods, repairStore, userStore } = this.props;
+    actionMethods.loadMore(userStore.user.roles, userStore.user.id, repairStore.next);
+  }
+
   render() {
     const { repairStore, userStore, actionMethods } = this.props;
     return (<div className="py-5">
@@ -93,7 +99,7 @@ class ListRepairs extends React.Component {
               </button>
               <div className="collapse" id="collapseExample">
                 <div className="card card-block">
-                  <form onSubmit={actionMethods.performSearch}>
+                  <form onSubmit={actionMethods[userStore.user.attributes.roles === 'user' ? 'performSearchByUser' : 'performSearch']}>
                     <div className="row">
                       <div className="col-md-6">
                         <div className="form-group row">
@@ -166,13 +172,16 @@ class ListRepairs extends React.Component {
                         {repair.attributes.date} {repair.attributes.time} to <br />
                         {addTime(_.pick(repair.attributes, ['date', 'time'])).date} {addTime(_.pick(repair.attributes, ['date', 'time'])).time}</td>
                       <td>
-                        <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}/edit`}><i className="fa fa-edit" /></Link> &nbsp;
-                        <i role="button" tabIndex={-1} className="fa fa-trash" data-userId={repair.attributes.userId} data-id={repair.id} onClick={actionMethods.deleteRepair} /> &nbsp;
+                        {userStore.user.attributes.roles !== 'user' ? <span>
+                          <Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}/edit`}><i className="fa fa-edit" /></Link> &nbsp;
+                          <i role="button" tabIndex={-1} className="fa fa-trash" data-userId={repair.attributes.userId} data-id={repair.id} onClick={actionMethods.deleteRepair} /> &nbsp;
+                        </span> : '' }
                         <ActionButtons {...repair.attributes} id={repair.id} role={userStore.user.attributes.roles} markApproved={actionMethods.markApproved} markCompleted={actionMethods.markCompleted} markIncomplete={actionMethods.markIncomplete} />
                       </td>
                     </tr>))}
                   </tbody>
                 </table>
+                <div>{!_.isEmpty(repairStore.next) ? <button className="btn btn-primary" onClick={this.loadMore}>Load More</button> : ''}</div>
               </div>
             </div>
           </div>
@@ -197,6 +206,7 @@ ListRepairs.propTypes = {
   }).isRequired,
   repairStore: PropTypes.shape({
     info: PropTypes.string,
+    next: PropTypes.string,
     error: PropTypes.shape({
       code: PropTypes.string,
     }),
