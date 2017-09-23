@@ -15,10 +15,10 @@ import ViewRepair from 'components/view-repair/view-repair-container';
 const Routes = () => (<div>
   <Route path="/(users|roles)" component={Header} />
   <Switch>
-    <Route path="/auth/create-account" component={CreateUser} />
-    <Route path="/auth/verify-account" component={VerifyAccount} />
-    <Route path="/" component={Login} />
-    <Route path="/auth/login" component={Login} />
+    <Route exact path="/auth/create-account" component={CreateUser} />
+    <Route exact path="/auth/verify-account" component={VerifyAccount} />
+    <Route exact path="/" component={Login} />
+    <Route exact path="/auth/login" component={Login} />
     <Route exact path="/users" component={ListUsers} />
     <Route exact path="/users/add" component={AddUser} />
     <Route exact path="/users/:userId/edit" component={EditUser} />

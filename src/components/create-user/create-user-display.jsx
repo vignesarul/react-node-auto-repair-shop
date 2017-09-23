@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import AlertMessage from 'components/alert-box/alert-box-display';
 
@@ -24,14 +25,18 @@ class CreateUser extends React.Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="email">Email address</label>
-                    <input type="email" name="email" className="form-control" />
+                    <input type="email" name="email" className="form-control" autoComplete="new-password" />
                   </div>
                   <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <input type="password" name="password" className="form-control" />
+                    <input type="password" name="password" className="form-control" autoComplete="new-password" />
                   </div>
-                  <button type="submit" disabled={this.props.isLoading} className="btn btn-primary">Login</button>
+                  <button type="submit" disabled={this.props.isLoading} className="btn btn-primary">Signup</button>
                 </form>
+                <br />
+                <Link to="/auth/forgot-password" className="btn btn-link btn-sm">Forgot Password</Link>
+                <Link to="/auth/reset-password" className="btn btn-link btn-sm">Reset Password</Link>
+                <Link to="/auth/login" className="btn btn-link btn-sm">Login</Link>
               </div>
             </div>
           </div>

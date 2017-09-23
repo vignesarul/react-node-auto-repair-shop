@@ -160,8 +160,8 @@ class ListRepairs extends React.Component {
                     <tr>
                       <th>Title</th>
                       <th>User</th>
-                      <th>Time</th>
-                      <th>Action</th>
+                      <th className="w-25">Time</th>
+                      <th className="w-25">Action</th>
                     </tr>
                   </thead>
                   <tbody>

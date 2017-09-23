@@ -24,7 +24,7 @@ module.exports = {
     id: '3522a250',
   },
   listing: {
-    limit: 10,
+    limit: 5,
   },
   mail: {
     sendgrid: {
