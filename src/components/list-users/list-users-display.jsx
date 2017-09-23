@@ -33,6 +33,7 @@ class ListUser extends React.Component {
                   <thead>
                     <tr>
                       <th />
+                      <th />
                       <th>First Name</th>
                       <th>Email</th>
                       <th>Action</th>
@@ -41,6 +42,7 @@ class ListUser extends React.Component {
                   <tbody>
                     {_.keys(userStore.users || []).map(userId => (<tr key={userId}>
                       <td>{userStore.users[userId].attributes.roles === 'user' ? <i className="fa fa-fw fa-user" /> : <i className="fa fa-fw fa-users" /> }</td>
+                      <td><img className="rounded-circle" src={`http://i.pravatar.cc/50?u=${userId}`} alt={userId} /></td>
                       <td>{userStore.users[userId].attributes.firstName}</td>
                       <td>{userStore.users[userId].attributes.email}</td>
                       <td>

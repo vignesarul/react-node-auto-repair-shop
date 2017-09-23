@@ -64,7 +64,7 @@ class ViewRepair extends React.Component {
 
                     <form onSubmit={actionMethods.createComment}>
                       <div className="input-group">
-                        <input className="form-control" name="text" placeholder="Add a comment" type="text" />
+                        <input className="form-control" name="text" placeholder="Add a comment" required type="text" />
                         <span className="input-group-addon">
                           <button type="submit" disabled={repairStore.isLoading} className="btn btn-primary btn-sm">Comment</button>
                         </span>

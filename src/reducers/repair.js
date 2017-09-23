@@ -36,7 +36,7 @@ function repairReducer(state = null, action) {
         isLoading: false,
         error: {},
         info: 'Meal Added successfully',
-        repairsList: action.response.data.concat(state.repairsList),
+        repairsList: action.response.data.concat(state.repairsList || []),
       });
     case 'UPDATE_REPAIR_BY_ADMIN':
     case 'ADD_COMMENT':

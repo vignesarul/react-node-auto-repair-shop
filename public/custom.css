@@ -1,6 +1,9 @@
 li.nav-item.dropdown {
   margin-right: 20px !important;
 }
+.table td, .table th{
+  vertical-align: middle !important;
+}
 .loadMore{
   text-align: center;
 }
