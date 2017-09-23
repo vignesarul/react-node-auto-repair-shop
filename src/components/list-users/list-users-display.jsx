@@ -44,10 +44,18 @@ class ListUser extends React.Component {
                       <td>{userStore.users[userId].attributes.firstName}</td>
                       <td>{userStore.users[userId].attributes.email}</td>
                       <td>
-                        <Link to={`/users/${userId}/edit`}><i className="fa fa-edit" /></Link>&nbsp;
-                        <i role="button" tabIndex={-1} className="fa fa-trash" data-userId={userId} onClick={actionMethods.deleteUser} /> &nbsp;
-                        <Link to={`/users/${userId}/repairs/create`}><i className="fa fa-plus-square" /></Link>&nbsp;
-                        <Link to={`/users/${userStore.user.id}/repairs?userId=${userId}`}><i className="fa fa-list" /></Link>
+                        <div className="btn-group">
+                          <button type="button" className="btn btn-sm btn-primary">Actions</button>
+                          <button type="button" className="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span className="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <div className="dropdown-menu">
+                            <Link to={`/users/${userId}/edit`} className="dropdown-item">Edit</Link>
+                            {userId !== userStore.user.id ? <button type="button" className="dropdown-item" data-userId={userId} onClick={actionMethods.deleteUser}>Delete</button> : ''}
+                            <Link to={`/users/${userId}/repairs/create`} className="dropdown-item">Add Repair</Link>
+                            <Link to={`/users/${userStore.user.id}/repairs?userId=${userId}`} className="dropdown-item">List Repairs</Link>
+                          </div>
+                        </div>
                       </td>
                     </tr>))}
                   </tbody>
