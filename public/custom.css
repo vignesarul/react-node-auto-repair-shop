@@ -1,6 +1,9 @@
 li.nav-item.dropdown {
   margin-right: 20px !important;
 }
+.loadMore{
+  text-align: center;
+}
 .sideBarProfile {
   border: none !important;
 }

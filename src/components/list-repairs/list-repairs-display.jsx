@@ -214,7 +214,7 @@ class ListRepairs extends React.Component {
                     </tr>))}
                   </tbody>
                 </table>
-                <div>{!_.isEmpty(repairStore.next) ? <button className="btn btn-primary" onClick={this.loadMore}>Load More</button> : ''}</div>
+                <div className="loadMore">{!_.isEmpty(repairStore.next) ? <button className="btn btn-sm btn-primary" onClick={this.loadMore}>Load More</button> : ''}</div>
               </div>
             </div>
           </div>
