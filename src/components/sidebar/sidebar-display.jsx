@@ -11,6 +11,9 @@ const SideBar = props => (<div className="col-md-3">
       <Link to={`/users/${props.userStore.user.id}/repairs`} className="nav-link"><i className="fa fa-home" /> All repairs</Link>
     </li>
     <li className="nav-item">
+      <Link to="/users/add" className="nav-link"><i className="fa fa-home" /> Add User</Link>
+    </li>
+    <li className="nav-item">
       <Link to="/users" className="nav-link"><i className="fa fa-home" /> List Users</Link>
     </li></ul>) : ''}
   <ul className="nav nav-pills flex-column">

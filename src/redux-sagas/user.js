@@ -13,6 +13,18 @@ function* watchCreateAccount() {
   yield takeEvery('CREATE_ACCOUNT', createAccountAsync);
 }
 
+function* addUserByAdminAsync(action) {
+  const token = yield select(getToken);
+  const response = yield call(callApi, 'post', '/users', action.requestBody, { headers: {
+    authorization: token,
+  } });
+  yield put({ type: 'ADD_USER_BY_ADMIN_RESPONSE', response });
+}
+
+function* watchAddUserAccount() {
+  yield takeEvery('ADD_USER_BY_ADMIN', addUserByAdminAsync);
+}
+
 function* verifyAccountAsync(action) {
   const response = yield call(callApi, 'put', `/users/${action.requestBody.userId}/activate`,
     _.omit(action.requestBody, 'userId'),
@@ -98,6 +110,7 @@ function* watchDeleteUser() {
 
 export default () => ([
   watchCreateAccount(),
+  watchAddUserAccount(),
   watchVerifyAccount(),
   watchLogin(),
   watchGetUser(),

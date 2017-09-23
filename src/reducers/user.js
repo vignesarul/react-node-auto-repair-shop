@@ -17,6 +17,19 @@ function userReducer(state = null, action) {
         info: 'Enter the verification code sent to your email',
         userId: action.response.data[0].id,
       }));
+    case 'ADD_USER_BY_ADMIN':
+      return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
+    case 'ADD_USER_BY_ADMIN_RESPONSE':
+      if (action.response.errors.length > 0) {
+        return _.assign(_.cloneDeep(state), { isLoading: false, error: action.response.errors[0] });
+      }
+      return (_.merge(_.cloneDeep(state), {
+        isLoading: false,
+        info: 'New user account created. User will receive password in email',
+        users: {
+          [action.response.data[0].id]: action.response.data[0],
+        },
+      }));
     case 'VERIFY_ACCOUNT':
       return _.assign(_.cloneDeep(state), { isLoading: true, error: '', info: '' });
     case 'VERIFY_ACCOUNT_RESPONSE':
