@@ -1,50 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import Sidebar from 'components/sidebar/sidebar-container';
 import AlertMessage from 'components/alert-box/alert-box-display';
 
 class AddRepair extends React.Component {
   componentWillMount() {
-    if (this.props.info) {
-      this.props.clearInfo();
+    if (this.props.repairStore.info) {
+      this.props.actionMethods.clearInfo();
     }
   }
 
+  componentDidMount() {
+    const { actionMethods } = this.props;
+    actionMethods.getUsers();
+  }
+
   componentDidUpdate() {
-    if (this.props.info) {
-      this.props.history.push(`/users/${this.props.user.id}/repairs`);
+    if (this.props.repairStore.info) {
+      this.props.history.push(`/users/${this.props.userStore.user.id}/repairs`);
     }
   }
 
   render() {
+    const { repairStore, actionMethods, userStore } = this.props;
     return (<div className="py-5">
       <div className="container">
         <div className="row">
-          <Sidebar userId={this.props.user.id} />
+          <Sidebar userId={userStore.user.id} />
           <div className="col-md-9">
             <div className="card mx-auto w-100">
 
               <div className="card-header">Add Repair</div>
-              {(this.props.info || this.props.error) ? <AlertMessage message={this.props} /> : ''}
+              {(repairStore.info || repairStore.error) ? <AlertMessage message={repairStore} /> : ''}
               <div className="card-block">
 
-                <form onSubmit={this.props.createNewRepair}>
+                <form onSubmit={actionMethods.createNewRepair}>
                   <div className="form-group">
                     <label htmlFor="title">Title</label>
-                    <input type="text" name="title" className="form-control" />
+                    <input type="text" name="title" required className="form-control" />
                   </div>
                   <div className="form-group">
                     <label htmlFor="userId">User Id</label>
-                    <input
-                      type="text"
-                      name="userId"
-                      defaultValue={this.props.match.params.userId}
-                      className="form-control"
-                    />
+                    <select className="form-control" name="userId">
+                      {_.keys(userStore.users).map(userId => <option key={userId} value={userId}>{`${userStore.users[userId].attributes.firstName} - ${userId}`}</option>)}
+                    </select>
                   </div>
                   <div className="form-group">
                     <label htmlFor="date">Date</label>
-                    <input type="date" name="date" className="form-control" />
+                    <input type="date" name="date" className="form-control" required />
                   </div>
                   <div className="form-group">
                     <label htmlFor="time">Time</label>
@@ -53,6 +57,7 @@ class AddRepair extends React.Component {
                       pattern="^(?:2[0-3]|[01]?[0-9]):[0-5][0-9]:[0-5][0-9]$"
                       name="time"
                       className="form-control"
+                      required
                     />
                   </div>
                   <div className="form-group">
@@ -63,7 +68,7 @@ class AddRepair extends React.Component {
                       <option value="approved">Approved</option>
                     </select>
                   </div>
-                  <button type="submit" disabled={this.props.isLoading} className="btn btn-primary">Add Repair</button>
+                  <button type="submit" disabled={repairStore.isLoading} className="btn btn-primary">Add Repair</button>
                 </form>
               </div>
             </div>
@@ -75,24 +80,26 @@ class AddRepair extends React.Component {
 }
 
 AddRepair.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.string,
-  }),
-  info: PropTypes.string,
-  error: PropTypes.shape({
-    code: PropTypes.string,
-  }),
+  userStore: PropTypes.shape({
+    user: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }).isRequired,
+  repairStore: PropTypes.shape({
+    info: PropTypes.string,
+    error: PropTypes.shape({
+      code: PropTypes.string,
+    }),
+    isLoading: PropTypes.bool.isRequired,
+  }).isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }).isRequired,
-  clearInfo: PropTypes.func.isRequired,
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      userId: PropTypes.string,
-    }),
+  actionMethods: PropTypes.shape({
+    createNewRepair: PropTypes.func.isRequired,
+    clearInfo: PropTypes.func.isRequired,
+    getUsers: PropTypes.func.isRequired,
   }).isRequired,
-  isLoading: PropTypes.bool.isRequired,
-  createNewRepair: PropTypes.func.isRequired,
 };
 
 AddRepair.defaultProps = {
