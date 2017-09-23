@@ -25,6 +25,15 @@ function mapDispatchToProps(dispatch) {
         };
         dispatch({ type: 'UPDATE_USER', requestBody });
       },
+      updatePassword: (e) => {
+        e.preventDefault();
+        const requestBody = {
+          old: e.target.old.value,
+          new: e.target.new.value,
+          userId: e.target.userId.value,
+        };
+        dispatch({ type: 'UPDATE_USER_PASSWORD', requestBody });
+      },
       clearInfo: () => {
         dispatch({ type: 'CLEAR_INFO' });
       },

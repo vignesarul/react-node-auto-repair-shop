@@ -83,7 +83,18 @@ function userReducer(state = null, action) {
       const updatedList = _.cloneDeep(state.users);
       updatedList[action.response.data[0].id] = action.response.data[0];
       return _.assign(_.cloneDeep(state), {
-        isLoading: false, error: {}, info: 'Repair Updated Successfully', users: updatedList,
+        isLoading: false, error: {}, info: 'Profile updated', users: updatedList,
+      });
+    }
+    case 'UPDATE_USER_PASSWORD':
+      return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
+    case 'UPDATE_USER_PASSWORD_RESPONSE': {
+      if (action.response.errors.length > 0) {
+        return _.merge(_.cloneDeep(state), { isLoading: false, error: action.response.errors[0] });
+      }
+      console.log('updated user password', action.response.data);
+      return _.assign(_.cloneDeep(state), {
+        isLoading: false, error: {}, info: 'Password updated',
       });
     }
     case 'DELETE_USER':

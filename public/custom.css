@@ -45,3 +45,6 @@
 .collapse{
   margin-top: 10px;
 }
+.nav-link{
+  cursor: pointer !important;
+}

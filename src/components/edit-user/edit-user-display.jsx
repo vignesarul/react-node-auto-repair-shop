@@ -5,6 +5,13 @@ import Sidebar from 'components/sidebar/sidebar-container';
 import AlertMessage from 'components/alert-box/alert-box-display';
 
 class EditUser extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      updatedForm: '',
+    };
+    this.trackFormUpdate = this.trackFormUpdate.bind(this);
+  }
   componentWillMount() {
     const { actionMethods, userStore } = this.props;
     if (userStore.info) {
@@ -12,14 +19,11 @@ class EditUser extends React.Component {
     }
   }
 
-  componentWillReceiveProps(props) {
-    const { userStore } = props;
-    if (userStore.info) {
-      if (userStore.user.attributes.roles !== 'user') {
-        this.props.history.push('/users');
-      } else {
-        this.props.history.push(`/users/${userStore.user.id}/repairs?userId=${userStore.user.id}`);
-      }
+  trackFormUpdate(e) {
+    if (e.target.name) {
+      this.setState({
+        updatedForm: e.target.name,
+      });
     }
   }
 
@@ -33,8 +37,8 @@ class EditUser extends React.Component {
           <div className="col-md-9">
             <div className="card mx-auto w-100">
 
-              <div className="card-header">Edit Repair</div>
-              {(userStore.info || userStore.error) ? <AlertMessage message={userStore} /> : ''}
+              <div className="card-header">Edit User</div>
+              {((userStore.info || userStore.error) && this.state.updatedForm === 'editUser') ? <AlertMessage message={userStore} /> : ''}
               <div className="card-block">
 
                 <form onSubmit={actionMethods.EditUser}>
@@ -47,7 +51,26 @@ class EditUser extends React.Component {
                     <label htmlFor="date">Email</label>
                     <input type="text" name="email" className="form-control" defaultValue={user.attributes.email} />
                   </div>
-                  <button type="submit" disabled={userStore.isLoading} className="btn btn-primary">Edit User</button>
+                  <button type="submit" disabled={userStore.isLoading} onClick={this.trackFormUpdate} name="editUser" className="btn btn-primary">Edit User</button>
+                </form>
+              </div>
+            </div>
+            <br />
+            <div className="card mx-auto w-100">
+              <div className="card-header">Update Password</div>
+              {((userStore.info || userStore.error) && this.state.updatedForm === 'editPassword') ? <AlertMessage message={userStore} /> : ''}
+              <div className="card-block">
+                <form onSubmit={actionMethods.updatePassword}>
+                  <input type="hidden" name="userId" defaultValue={user.id} />
+                  <div className="form-group">
+                    <label htmlFor="old">Current Password</label>
+                    <input type="password" name="old" className="form-control" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="new">New Password</label>
+                    <input type="password" name="new" className="form-control" />
+                  </div>
+                  <button type="submit" onClick={this.trackFormUpdate} disabled={userStore.isLoading} name="editPassword" className="btn btn-primary">Update Password</button>
                 </form>
               </div>
             </div>
@@ -63,9 +86,6 @@ EditUser.propTypes = {
     user: PropTypes.shape({
       id: PropTypes.string,
     }),
-  }).isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func,
   }).isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({

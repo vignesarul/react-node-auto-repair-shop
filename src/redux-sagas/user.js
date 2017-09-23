@@ -69,6 +69,18 @@ function* watchUpdateUser() {
   yield takeEvery('UPDATE_USER', updateUserAsync);
 }
 
+function* updateUserPasswordAsync(action) {
+  const token = yield select(getToken);
+  const response = yield call(callApi, 'put', `/users/${action.requestBody.userId}/password`, action.requestBody, { headers: {
+    authorization: token,
+  } });
+  yield put({ type: 'UPDATE_USER_PASSWORD_RESPONSE', response });
+}
+
+function* watchUpdateUserPassword() {
+  yield takeEvery('UPDATE_USER_PASSWORD', updateUserPasswordAsync);
+}
+
 function* deleteUserAsync(action) {
   const token = yield select(getToken);
   const response = yield call(callApi, 'delete', `/users/${action.requestBody.userId}`, { headers: {
@@ -91,5 +103,6 @@ export default () => ([
   watchGetUser(),
   watchGetAllUsers(),
   watchUpdateUser(),
+  watchUpdateUserPassword(),
   watchDeleteUser(),
 ]);

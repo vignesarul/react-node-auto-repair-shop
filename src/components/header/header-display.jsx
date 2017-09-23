@@ -9,7 +9,7 @@ class Header extends React.Component {
   }
 
   render() {
-    return (<nav className="navbar navbar-expand-md navbar-light bg-faded">
+    return (<nav className="navbar navbar-toggleable-md navbar-light bg-faded">
       <div className="container">
         <a className="navbar-brand">Repair Shop</a>
         <button
@@ -23,12 +23,8 @@ class Header extends React.Component {
         ><span className="navbar-toggler-icon" /></button>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav mr-auto" />
-          <form className="form-inline my-2 my-lg-0">
-            <input className="form-control mr-sm-2" type="text" placeholder="Search" />
-            <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
           <ul className="navbar-nav">
-            <li className="nav-item">
+            <li className="nav-item active">
               <a className="nav-link" role="link" tabIndex="-1" onClick={() => { this.props.doLogout(this.props.history); }}>Logout</a>
             </li>
           </ul>
