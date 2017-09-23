@@ -24,11 +24,11 @@ class Login extends React.Component {
                 <form onSubmit={this.props.performLogin}>
                   <div className="form-group">
                     <label htmlFor="email">Email address</label>
-                    <input type="email" name="email" className="form-control" />
+                    <input type="email" name="email" required className="form-control" />
                   </div>
                   <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <input type="password" name="password" className="form-control" />
+                    <input type="password" name="password" required className="form-control" />
                   </div>
                   <button type="submit" disabled={this.props.isLoading} className="btn btn-primary">Login</button>
                 </form>

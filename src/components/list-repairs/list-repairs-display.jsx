@@ -104,7 +104,7 @@ class ListRepairs extends React.Component {
           <div className="col-md-9">
             <div style={{ textAlign: 'right', marginBottom: '10px' }}>
               <button className="btn btn-secondary btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                Advanced Search
+                Filter
               </button>&nbsp;
               <button
                 type="button"
@@ -177,15 +177,17 @@ class ListRepairs extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th className="w-25">Title</th>
+                      <th>Title</th>
+                      <th />
                       <th>User</th>
-                      <th>Time</th>
+                      <th className="timeColumn">Time</th>
                       <th className="actionButtons">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {(repairStore.repairsList || []).map(repair => (<tr key={repair.id}>
                       <td><Link to={`/users/${repair.attributes.userId}/repairs/${repair.id}`}>{repair.attributes.title}</Link></td>
+                      <td><span className="badge badge-default"><i className="fa fa-fw fa-comment" /> {repair.attributes.comments.length}</span></td>
                       <td><Link to={`/users/${repair.attributes.userId}/edit`}>{this.getUserName(repair.attributes.userId)}</Link></td>
                       <td>
                         {addDays({

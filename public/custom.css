@@ -1,8 +1,21 @@
-.red {
-  color: #be0000;
+li.nav-item.dropdown {
+  margin-right: 20px !important;
+}
+.sideBarProfile {
+  border: none !important;
+}
+.profileImg {
+  text-align: center;
+  margin-top: 10px;
+}
+.leftSideBar {
+  margin-top: 35px;
 }
 .actionButtons{
   width:135px !important;
+}
+.timeColumn{
+  width:200px !important;
 }
 .btn {
   cursor: pointer !important;
@@ -50,9 +63,6 @@
 }
 .post .post-footer .comments-list .comment > .comments-list {
   margin-left: 50px;
-}
-.collapse{
-  margin-top: 10px;
 }
 .nav-link{
   cursor: pointer !important;

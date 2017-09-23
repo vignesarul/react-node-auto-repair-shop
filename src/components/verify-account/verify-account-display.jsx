@@ -21,7 +21,7 @@ class VerifyAccount extends React.Component {
                   <input type="hidden" name="userId" value={this.props.userId} />
                   <div className="form-group">
                     <label htmlFor="code">Verification code</label>
-                    <input type="text" name="code" className="form-control" />
+                    <input type="text" name="code" required className="form-control" />
                   </div>
                   <button type="submit" disabled={this.props.isLoading} className="btn btn-primary">Verify Email</button>
                 </form>

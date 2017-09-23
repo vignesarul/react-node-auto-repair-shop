@@ -21,15 +21,15 @@ class CreateUser extends React.Component {
                 <form className="" onSubmit={this.props.createAccount}>
                   <div className="form-group">
                     <label htmlFor="firstName">Name</label>
-                    <input type="text" name="firstName" className="form-control" />
+                    <input type="text" name="firstName" required className="form-control" />
                   </div>
                   <div className="form-group">
                     <label htmlFor="email">Email address</label>
-                    <input type="email" name="email" className="form-control" autoComplete="new-password" />
+                    <input type="email" name="email" required className="form-control" autoComplete="new-password" />
                   </div>
                   <div className="form-group">
                     <label htmlFor="password">Password</label>
-                    <input type="password" name="password" className="form-control" autoComplete="new-password" />
+                    <input type="password" name="password" required className="form-control" autoComplete="new-password" />
                   </div>
                   <button type="submit" disabled={this.props.isLoading} className="btn btn-primary">Signup</button>
                 </form>

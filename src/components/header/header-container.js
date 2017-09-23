@@ -3,8 +3,12 @@ import Header from 'components/header/header-display';
 import _ from 'lodash';
 
 // Map Redux state to component props
-function mapStateToProps(state) {
-  return _.cloneDeep(state).user;
+function mapStateToProps(store) {
+  const { repair, user } = _.cloneDeep(store);
+  return {
+    repairStore: repair,
+    userStore: user,
+  };
 }
 
 // Map Redux actions to component props

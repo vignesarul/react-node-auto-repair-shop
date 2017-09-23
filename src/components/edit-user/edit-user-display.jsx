@@ -45,11 +45,11 @@ class EditUser extends React.Component {
                   <input type="hidden" name="userId" defaultValue={user.id} />
                   <div className="form-group">
                     <label htmlFor="firstName">FirstName</label>
-                    <input type="text" name="firstName" className="form-control" defaultValue={user.attributes.firstName} />
+                    <input type="text" name="firstName" required className="form-control" defaultValue={user.attributes.firstName} />
                   </div>
                   <div className="form-group">
                     <label htmlFor="date">Email</label>
-                    <input type="text" name="email" className="form-control" defaultValue={user.attributes.email} />
+                    <input type="text" name="email" required className="form-control" defaultValue={user.attributes.email} />
                   </div>
                   <button type="submit" disabled={userStore.isLoading} onClick={this.trackFormUpdate} name="editUser" className="btn btn-primary">Edit User</button>
                 </form>
@@ -81,11 +81,11 @@ class EditUser extends React.Component {
                   <input type="hidden" name="userId" defaultValue={user.id} />
                   <div className="form-group">
                     <label htmlFor="old">Current Password</label>
-                    <input type="password" name="old" className="form-control" />
+                    <input type="password" required name="old" className="form-control" />
                   </div>
                   <div className="form-group">
                     <label htmlFor="new">New Password</label>
-                    <input type="password" name="new" className="form-control" />
+                    <input type="password" required name="new" className="form-control" />
                   </div>
                   <button type="submit" onClick={this.trackFormUpdate} disabled={userStore.isLoading} name="editPassword" className="btn btn-primary">Update Password</button>
                 </form>

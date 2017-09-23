@@ -43,7 +43,7 @@ class EditRepair extends React.Component {
                   <input type="hidden" name="repairOwnerId" defaultValue={match.params.userId} />
                   <div className="form-group">
                     <label htmlFor="title">Title</label>
-                    <input type="text" name="title" className="form-control" defaultValue={repair.attributes.title} />
+                    <input type="text" name="title" required className="form-control" defaultValue={repair.attributes.title} />
                   </div>
                   <div className="form-group">
                     <label htmlFor="userId">User Id</label>
@@ -53,7 +53,7 @@ class EditRepair extends React.Component {
                   </div>
                   <div className="form-group">
                     <label htmlFor="date">Date</label>
-                    <input type="date" name="date" className="form-control" defaultValue={repair.attributes.date} />
+                    <input type="date" name="date" required className="form-control" defaultValue={repair.attributes.date} />
                   </div>
                   <div className="form-group">
                     <label htmlFor="time">Time</label>
@@ -63,6 +63,7 @@ class EditRepair extends React.Component {
                       name="time"
                       className="form-control"
                       defaultValue={repair.attributes.time}
+                      required
                     />
                   </div>
                   <div className="form-group">
