@@ -32,6 +32,7 @@ class ListUser extends React.Component {
                 <table className="table">
                   <thead>
                     <tr>
+                      <th />
                       <th>First Name</th>
                       <th>Email</th>
                       <th>Action</th>
@@ -39,6 +40,7 @@ class ListUser extends React.Component {
                   </thead>
                   <tbody>
                     {_.keys(userStore.users || []).map(userId => (<tr key={userId}>
+                      <td>{userStore.users[userId].attributes.roles === 'user' ? <i className="fa fa-fw fa-user" /> : <i className="fa fa-fw fa-users" /> }</td>
                       <td>{userStore.users[userId].attributes.firstName}</td>
                       <td>{userStore.users[userId].attributes.email}</td>
                       <td>
