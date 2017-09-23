@@ -93,6 +93,18 @@ function* watchUpdateUserPassword() {
   yield takeEvery('UPDATE_USER_PASSWORD', updateUserPasswordAsync);
 }
 
+function* updateUserRoleAsync(action) {
+  const token = yield select(getToken);
+  const response = yield call(callApi, 'put', `/users/${action.requestBody.userId}/roles`, action.requestBody, { headers: {
+    authorization: token,
+  } });
+  yield put({ type: 'UPDATE_USER_ROLE_RESPONSE', response });
+}
+
+function* watchUpdateUserRole() {
+  yield takeEvery('UPDATE_USER_ROLE', updateUserRoleAsync);
+}
+
 function* deleteUserAsync(action) {
   const token = yield select(getToken);
   const response = yield call(callApi, 'delete', `/users/${action.requestBody.userId}`, { headers: {
@@ -117,5 +129,6 @@ export default () => ([
   watchGetAllUsers(),
   watchUpdateUser(),
   watchUpdateUserPassword(),
+  watchUpdateUserRole(),
   watchDeleteUser(),
 ]);

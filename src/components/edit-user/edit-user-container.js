@@ -34,6 +34,14 @@ function mapDispatchToProps(dispatch) {
         };
         dispatch({ type: 'UPDATE_USER_PASSWORD', requestBody });
       },
+      updateRole: (e) => {
+        e.preventDefault();
+        const requestBody = {
+          roles: e.target.role.value,
+          userId: e.target.userId.value,
+        };
+        dispatch({ type: 'UPDATE_USER_ROLE', requestBody });
+      },
       clearInfo: () => {
         dispatch({ type: 'CLEAR_INFO' });
       },

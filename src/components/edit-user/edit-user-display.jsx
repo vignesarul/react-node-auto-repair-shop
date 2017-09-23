@@ -56,6 +56,23 @@ class EditUser extends React.Component {
               </div>
             </div>
             <br />
+            { (userStore.user.attributes.roles !== 'user' && userStore.user.id !== user.id) ? <div><div className="card mx-auto w-100">
+              <div className="card-header">Update Role</div>
+              {((userStore.info || userStore.error) && this.state.updatedForm === 'updateRole') ? <AlertMessage message={userStore} /> : ''}
+              <div className="card-block">
+                <form onSubmit={actionMethods.updateRole}>
+                  <input type="hidden" name="userId" defaultValue={user.id} />
+                  <div className="form-group">
+                    <label htmlFor="role">Role</label>
+                    <select className="form-control" name="role" defaultValue={user.attributes.roles}>
+                      <option value="user">User</option>
+                      <option value="manager">Manager</option>
+                    </select>
+                  </div>
+                  <button type="submit" onClick={this.trackFormUpdate} disabled={userStore.isLoading} name="updateRole" className="btn btn-primary">Update Role</button>
+                </form>
+              </div>
+            </div><br /></div> : '' }
             <div className="card mx-auto w-100">
               <div className="card-header">Update Password</div>
               {((userStore.info || userStore.error) && this.state.updatedForm === 'editPassword') ? <AlertMessage message={userStore} /> : ''}

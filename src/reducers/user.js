@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import config from 'common/config/react';
 
-console.log('config', config);
 // Reducer
 
 function userReducer(state = null, action) {
@@ -86,8 +85,10 @@ function userReducer(state = null, action) {
         users,
       }));
     }
+    case 'UPDATE_USER_ROLE':
     case 'UPDATE_USER':
       return _.assign(_.cloneDeep(state), { isLoading: true, error: {}, info: '' });
+    case 'UPDATE_USER_ROLE_RESPONSE':
     case 'UPDATE_USER_RESPONSE': {
       if (action.response.errors.length > 0) {
         return _.merge(_.cloneDeep(state), { isLoading: false, error: action.response.errors[0] });
