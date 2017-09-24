@@ -4,9 +4,8 @@ Auto repair management app written in React.js, Redux, Node.js & MongoDb
 Allows managers to CRUD users, managers and repairs
 Allows users to Read and update repairs assigned to them
 
-Api Url:
-Frontend Url:
-Refer API documentation for usage examples:
+Api Url: http://localhost:3001/api/v1
+Frontend Url: http://localhost:3000
 
 ## System requirements
 For running the project locally the following requirements should be met.
