@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CreateUserDisplay /> should match the snapshop 1`] = `
+<CreateUser
+  createAccount={[Function]}
+  error=""
+  history={
+    Object {
+      "push": [Function],
+    }
+  }
+  info=""
+  isLoading={false}
+>
+  <div
+    className="py-5"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row mx-auto w-100"
+      >
+        <div
+          className="col-12 col-lg-5 col-xl-5 mx-auto col-md-8 align-self-center"
+        >
+          <div
+            className="card mx-auto w-100"
+          >
+            <div
+              className="card-header"
+            >
+              Create Account
+            </div>
+            <div
+              className="card-block"
+            >
+              <form
+                className=""
+                onSubmit={[Function]}
+              >
+                <div
+                  className="form-group"
+                >
+                  <label
+                    htmlFor="firstName"
+                  >
+                    Name
+                  </label>
+                  <input
+                    className="form-control"
+                    name="firstName"
+                    required={true}
+                    type="text"
+                  />
+                </div>
+                <div
+                  className="form-group"
+                >
+                  <label
+                    htmlFor="email"
+                  >
+                    Email address
+                  </label>
+                  <input
+                    autoComplete="new-password"
+                    className="form-control"
+                    name="email"
+                    required={true}
+                    type="email"
+                  />
+                </div>
+                <div
+                  className="form-group"
+                >
+                  <label
+                    htmlFor="password"
+                  >
+                    Password
+                  </label>
+                  <input
+                    autoComplete="new-password"
+                    className="form-control"
+                    name="password"
+                    required={true}
+                    type="password"
+                  />
+                </div>
+                <button
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Signup
+                </button>
+              </form>
+              <br />
+              <Link
+                className="btn btn-link btn-sm"
+                replace={false}
+                to="/auth/forgot-password"
+              />
+              <Link
+                className="btn btn-link btn-sm"
+                replace={false}
+                to="/auth/reset-password"
+              />
+              <Link
+                className="btn btn-link btn-sm"
+                replace={false}
+                to="/auth/login"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</CreateUser>
+`;

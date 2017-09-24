@@ -18,7 +18,7 @@
     "postinstall": "(NODE_PATH=./src node scripts/populateRolesAdmin.js) &",
     "react-start": "NODE_PATH=./src node scripts/start.js",
     "react-build": "NODE_PATH=./src node scripts/build.js",
-    "react-test": "node scripts/test.js --env=jsdom"
+    "react-test": "jest --watch --env=jsdom"
   },
   "dependencies": {
     "autoprefixer": "7.1.2",
@@ -68,7 +68,7 @@
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
-    "redux-persist": "5",
+    "redux-persist": "5.0.0-beta.14",
     "redux-saga": "^0.15.6",
     "sendgrid": "^5.2.0",
     "style-loader": "0.18.2",
@@ -82,9 +82,12 @@
   },
   "devDependencies": {
     "ava": "^0.21.0",
+    "enzyme": "^2.9.1",
+    "enzyme-to-json": "^2.0.0",
     "eslint-config-airbnb-base": "^11.3.1",
     "json-schema-faker": "^0.4.3",
     "raml2html": "^6.4.1",
+    "react-test-renderer": "^15.6.1",
     "supertest": "^3.0.0"
   },
   "jest": {
@@ -95,8 +98,7 @@
       "<rootDir>/config/polyfills.js"
     ],
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.js?(x)",
-      "<rootDir>/src/**/?(*.)(spec|test).js?(x)"
+      "<rootDir>/tests/**/?(*.)spec.js?(x)"
     ],
     "testEnvironment": "node",
     "testURL": "http://localhost",
@@ -111,6 +113,10 @@
     "moduleNameMapper": {
       "^react-native$": "react-native-web"
     },
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
     "moduleFileExtensions": [
       "web.js",
       "js",
@@ -118,6 +124,9 @@
       "web.jsx",
       "jsx",
       "node"
+    ],
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
     ]
   },
   "babel": {
