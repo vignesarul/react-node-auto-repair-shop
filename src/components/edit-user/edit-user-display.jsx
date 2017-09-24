@@ -51,7 +51,7 @@ class EditUser extends React.Component {
                     <label htmlFor="date">Email</label>
                     <input type="text" name="email" required className="form-control" defaultValue={user.attributes.email} />
                   </div>
-                  <button type="submit" disabled={userStore.isLoading} onClick={this.trackFormUpdate} name="editUser" className="btn btn-primary">Edit User</button>
+                  <button type="submit" disabled={userStore.isLoading} onClick={this.trackFormUpdate} name="editUser" className="btn btn-primary">Update User</button>
                 </form>
               </div>
             </div>

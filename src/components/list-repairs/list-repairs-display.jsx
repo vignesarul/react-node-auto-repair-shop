@@ -172,7 +172,7 @@ class ListRepairs extends React.Component {
             </div>
             <div className="card">
               <div className="card-header">Repairs</div>
-              {(repairStore.info || repairStore.error) ? <AlertMessage message={repairStore} /> : ''}
+              {!_.isEmpty(repairStore.error) ? <AlertMessage message={repairStore} /> : ''}
               <div className="card-block">
                 <table className="table">
                   <thead>
@@ -180,7 +180,7 @@ class ListRepairs extends React.Component {
                       <th>Title</th>
                       <th />
                       <th>User</th>
-                      <th className="timeColumn">Time</th>
+                      <th className="timeColumn">Start time</th>
                       <th className="actionButtons">Action</th>
                     </tr>
                   </thead>

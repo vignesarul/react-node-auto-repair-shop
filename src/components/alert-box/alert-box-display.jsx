@@ -8,7 +8,8 @@ const AlertMessage = (props) => {
   if (!info && _.isEmpty(error)) return (<div />);
   let message = props.message.info;
   if (!_.isEmpty(error)) {
-    message = `${props.message.error.code}: ${(props.message.error.source || {}).parameter || ''}`;
+    const param = (props.message.error.source || {}).parameter || '';
+    message = `${props.message.error.code}${param ? `: ${param}` : ''} `;
   }
   return (<div className={`alert alert-${!_.isEmpty(error) ? 'danger' : 'info'}`} role="alert">
     <p className="mb-0">{message}</p>

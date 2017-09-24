@@ -28,6 +28,7 @@ function mapDispatchToProps(dispatch) {
           repairId: e.target.repairId.value,
           comments: [{ text: e.target.text.value }],
         };
+        e.target.text.value = '';
         dispatch({ type: 'ADD_COMMENT', requestBody });
       },
     },

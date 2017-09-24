@@ -7,7 +7,7 @@ const SideBar = props => (<div className="col-md-3 leftSideBar">
       <img className="card-img-top rounded-circle" src={`http://i.pravatar.cc/150?u=${props.userStore.user.id}`} alt={props.userStore.user.attributes.firstName} />
     </div>
     <div className="card-block">
-      <h4>Welcome {props.userStore.user.attributes.firstName},</h4>
+      <h4>Welcome {props.userStore.users[props.userStore.user.id].attributes.firstName},</h4>
       {props.userStore.user.attributes.roles !== 'user' ? <p>Manage users and their repairs. </p> : <p>Manage your repairs and complete them. </p> }
     </div>
   </div>
@@ -22,6 +22,7 @@ SideBar.propTypes = {
         roles: PropTypes.string,
       }),
     }),
+    users: PropTypes.shape(),
   }).isRequired,
 };
 

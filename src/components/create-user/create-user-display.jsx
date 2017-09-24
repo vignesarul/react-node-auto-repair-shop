@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
 import PropTypes from 'prop-types';
 import AlertMessage from 'components/alert-box/alert-box-display';
 
@@ -10,6 +11,10 @@ class CreateUser extends React.Component {
     }
   }
   render() {
+    let errorParam;
+    if (!_.isEmpty(this.props.error)) {
+      errorParam = (this.props.error.source || {}).parameter || '';
+    }
     return (<div className="py-5">
       <div className="container">
         <div className="row mx-auto w-100">
@@ -19,23 +24,21 @@ class CreateUser extends React.Component {
               {(this.props.info || this.props.error) ? <AlertMessage message={this.props} /> : ''}
               <div className="card-block">
                 <form className="" onSubmit={this.props.createAccount}>
-                  <div className="form-group">
+                  <div className={`form-group ${errorParam && errorParam === 'firstName' ? 'has-danger' : ''}`}>
                     <label htmlFor="firstName">Name</label>
-                    <input type="text" name="firstName" required className="form-control" />
+                    <input type="text" name="firstName" required className={`form-control ${errorParam && errorParam === 'firstName' ? 'form-control-danger' : ''}`} />
                   </div>
-                  <div className="form-group">
+                  <div className={`form-group ${errorParam && errorParam === 'email' ? 'has-danger' : ''}`}>
                     <label htmlFor="email">Email address</label>
-                    <input type="email" name="email" required className="form-control" autoComplete="new-password" />
+                    <input type="email" name="email" required className={`form-control ${errorParam && errorParam === 'email' ? 'form-control-danger' : ''}`} autoComplete="new-password" />
                   </div>
-                  <div className="form-group">
+                  <div className={`form-group ${errorParam && errorParam === 'password' ? 'has-danger' : ''}`}>
                     <label htmlFor="password">Password</label>
-                    <input type="password" name="password" required className="form-control" autoComplete="new-password" />
+                    <input type="password" name="password" required className={`form-control ${errorParam && errorParam === 'password' ? 'form-control-danger' : ''}`} autoComplete="new-password" />
                   </div>
                   <button type="submit" disabled={this.props.isLoading} className="btn btn-primary">Signup</button>
                 </form>
                 <br />
-                <Link to="/auth/forgot-password" className="btn btn-link btn-sm">Forgot Password</Link>
-                <Link to="/auth/reset-password" className="btn btn-link btn-sm">Reset Password</Link>
                 <Link to="/auth/login" className="btn btn-link btn-sm">Login</Link>
               </div>
             </div>

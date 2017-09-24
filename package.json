@@ -68,7 +68,7 @@
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
-    "redux-persist": "5.0.0-beta.14",
+    "redux-persist": "5.0.0-beta.13",
     "redux-saga": "^0.15.6",
     "sendgrid": "^5.2.0",
     "style-loader": "0.18.2",
