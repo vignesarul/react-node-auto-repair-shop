@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LoginDisplay /> should match the snapshop 1`] = `
+<Login
+  error={Object {}}
+  history={
+    Object {
+      "push": [Function],
+    }
+  }
+  info=""
+  isLoading={false}
+  performLogin={[Function]}
+  user={Object {}}
+>
+  <div
+    className="py-5"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row mx-auto w-100"
+      >
+        <div
+          className="col-12 col-lg-5 col-xl-5 mx-auto col-md-8 align-self-center"
+        >
+          <div
+            className="card mx-auto w-100"
+          >
+            <div
+              className="card-header"
+            >
+              Login
+            </div>
+            <AlertMessage
+              message={
+                Object {
+                  "error": Object {},
+                  "history": Object {
+                    "push": [Function],
+                  },
+                  "info": "",
+                  "isLoading": false,
+                  "performLogin": [Function],
+                  "user": Object {},
+                }
+              }
+            >
+              <div />
+            </AlertMessage>
+            <div
+              className="card-block"
+            >
+              <form
+                onSubmit={[Function]}
+              >
+                <div
+                  className="form-group"
+                >
+                  <label
+                    htmlFor="email"
+                  >
+                    Email address
+                  </label>
+                  <input
+                    className="form-control"
+                    name="email"
+                    required={true}
+                    type="email"
+                  />
+                </div>
+                <div
+                  className="form-group"
+                >
+                  <label
+                    htmlFor="password"
+                  >
+                    Password
+                  </label>
+                  <input
+                    className="form-control"
+                    name="password"
+                    required={true}
+                    type="password"
+                  />
+                </div>
+                <button
+                  className="btn btn-primary"
+                  disabled={false}
+                  type="submit"
+                >
+                  Login
+                </button>
+              </form>
+              <br />
+              <Link
+                className="btn btn-link btn-sm"
+                replace={false}
+                to="/auth/create-account"
+              />
+              <Link
+                className="btn btn-link btn-sm"
+                replace={false}
+                to="/auth/forgot-password"
+              />
+              <Link
+                className="btn btn-link btn-sm"
+                replace={false}
+                to="/auth/reset-password"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</Login>
+`;

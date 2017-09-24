@@ -1,20 +1,20 @@
 jest.mock('react-router-dom/Link');
 import React from 'react';
 import { mount } from 'enzyme';
-import CreateUserDisplay from 'components/create-user/create-user-display';
+import LoginDisplay from 'components/login/login-display';
 
-describe('<CreateUserDisplay />', () => {
+describe('<LoginDisplay />', () => {
   let wrapper;
   const props = {
     history: {
       push: jest.fn(),
     },
     isLoading: false,
-    createAccount: jest.fn(),
+    performLogin: jest.fn(),
   };
 
   beforeEach(() => {
-    wrapper = mount(<CreateUserDisplay {...props} />);
+    wrapper = mount(<LoginDisplay {...props} />);
   });
 
   it('should match the snapshop', () => {
