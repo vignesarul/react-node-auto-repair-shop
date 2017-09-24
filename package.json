@@ -17,7 +17,7 @@
     "test": "yarn start & NODE_PATH=./src ava --fail-fast --watch --verbose --serial",
     "postinstall": "(NODE_PATH=./src node scripts/populateRolesAdmin.js) &",
     "react-start": "NODE_PATH=./src node scripts/start.js",
-    "react-build": "node scripts/build.js",
+    "react-build": "NODE_PATH=./src node scripts/build.js",
     "react-test": "node scripts/test.js --env=jsdom"
   },
   "dependencies": {
@@ -82,9 +82,7 @@
   },
   "devDependencies": {
     "ava": "^0.21.0",
-    "eslint": "^4.3.0",
     "eslint-config-airbnb-base": "^11.3.1",
-    "eslint-plugin-import": "^2.7.0",
     "json-schema-faker": "^0.4.3",
     "raml2html": "^6.4.1",
     "supertest": "^3.0.0"
