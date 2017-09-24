@@ -282,7 +282,7 @@ test.cb('GET /users/:userId/repairs - it should not allow user to list repairs o
 });
 
 test.cb('PUT /users/:userId/repairs/:RepairId - it should allow user to update repair details', (t) => {
-  const repairUpdateMock = _.omit(jsf(repairSchema.updateByUserSchema), 'userId');
+  const repairUpdateMock = { completed: true, comments: [{ text: 'hey', createdBy: userId }] }
   request
     .put(`/users/${userId}/repairs/${userRepairId}`)
     .set('Authorization', userToken)
